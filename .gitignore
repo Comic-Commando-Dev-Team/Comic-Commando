@@ -551,3 +551,6 @@ FodyWeavers.xsd
 
 # Include Unity packages manifest
 !/Packages/*
+
+# Inclue Unity meta files
+!/**/*.meta
