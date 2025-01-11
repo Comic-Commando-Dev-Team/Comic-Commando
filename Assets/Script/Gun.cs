@@ -1,75 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR;
 
-public class Gun : MonoBehaviour 
+public class Gun : MonoBehaviour
 {
+    [Header("Audio")]
     public AudioSource source;
     public AudioClip laserSound;
+
+    [Header("Projectile")]
     public GameObject laser;
     public Transform barrelLocation;
+    public float shootPower = 100f;
+    public float projectileLifetime = 5f;
 
-    private float fireRate = 0.05f;
+    [Header("Gun Settings")]
+    public float fireRate = 0.05f;
     private float nextFire = 0.0f;
 
-    public float shootPower;
-    private bool triggerDown = false;
+    [Header("Input")]
+    public InputActionProperty shootAction;
+    public XRNode controllerNode = XRNode.RightHand;
 
-    private ActionBasedController controller;
-
-    void Start()
+    private void OnEnable()
     {
-        if (barrelLocation == null)
-            barrelLocation = transform;
-
-        // Get the ActionBasedController (assuming it's on the same GameObject or can be assigned)
-        controller = GetComponent<ActionBasedController>();
+        shootAction.action?.Enable();
     }
 
-    void Update()
+    private void OnDisable()
     {
-        CheckTrigger();
-        Shoot();
+        shootAction.action?.Disable();
     }
 
-    private void CheckTrigger()
+    private void Update()
     {
-        if (controller != null && controller.selectAction.action != null)
+        if (shootAction.action?.triggered == true && Time.time >= nextFire)
         {
-            triggerDown = controller.selectAction.action.ReadValue<float>() > 0.1f;
+            nextFire = Time.time + fireRate;
+            Shoot();
         }
     }
 
     private void Shoot()
     {
-        if (triggerDown && Time.time > nextFire)
+        // Play sound
+        if (source != null && laserSound != null)
         {
-            nextFire = Time.time + fireRate;
+            source.PlayOneShot(laserSound);
+        }
 
-            Debug.Log("fire");
-            // Tworzenie lasera
-            GameObject instantiatedLaser = Instantiate(laser, barrelLocation.position, barrelLocation.rotation * Quaternion.Euler(90f, 0f, 0f));
-            Rigidbody rb = instantiatedLaser.GetComponent<Rigidbody>();
-            if (rb != null)
+        // Spawn projectile
+        if (laser != null && barrelLocation != null)
+        {
+            GameObject spawnedLaser = Instantiate(laser, barrelLocation.position, barrelLocation.rotation);
+            if (spawnedLaser.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 rb.AddForce(barrelLocation.forward * shootPower);
-                Debug.Log("laser");
             }
 
-            // Odtwarzanie dźwięku
-            if (source != null && laserSound != null)
-            {
-                source.PlayOneShot(laserSound);
-            }
+            // Destroy projectile after lifetime
+            Destroy(spawnedLaser, projectileLifetime);
+        }
 
-            // Haptics (jeśli chcesz dodać integrację)
-            if (controller != null && controller.SendHapticImpulse(0.5f, 0.1f))
-            {
-                Debug.Log("Haptic feedback sent.");
-            }
+        // Send haptic feedback
+        SendHapticImpulse(0.5f, 0.2f);
+    }
+
+    private void SendHapticImpulse(float amplitude, float duration)
+    {
+        UnityEngine.XR.InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
+        if (device.isValid)
+        {
+            device.SendHapticImpulse(0, amplitude, duration);
         }
     }
 }

@@ -1078,6 +1078,29 @@ MonoBehaviour:
   laser: {fileID: 114498028085176331, guid: 6732e2323ba29f5449249bbd708a9d80, type: 3}
   barrelLocation: {fileID: 1450627313}
   shootPower: 4
+  projectileLifetime: 5
+  fireRate: 0.05
+  shootAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Shoot
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c2bb3adf-28e7-412e-908d-288921b73232
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 64e233ad-4891-4154-9965-5068e365edbb
+        m_Path: <QuestTouchPlusController>/triggerPressed
+        m_Interactions: Press
+        m_Processors: 
+        m_Groups: 
+        m_Action: Shoot
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  controllerNode: 5
 --- !u!1 &2011262559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7277802327414017194, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
