@@ -5,38 +5,51 @@ using UnityEngine.XR;
 public class Gun : MonoBehaviour
 {
     [Header("Audio")]
-    public AudioSource source;
-    public AudioClip laserSound;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _laserSound;
 
     [Header("Projectile")]
-    public GameObject laser;
-    public Transform barrelLocation;
-    public float shootPower = 100f;
-    public float projectileLifetime = 5f;
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private Transform _barrelLocation;
+    [SerializeField] private float _shootPower = 100f;
+    [SerializeField] private float _projectileLifetime = 5f;
 
     [Header("Gun Settings")]
-    public float fireRate = 0.05f;
-    private float nextFire = 0.0f;
+    [SerializeField] private float _fireRate = 0.05f;
+    private float _nextFireTime;
 
     [Header("Input")]
-    public InputActionProperty shootAction;
-    public XRNode controllerNode = XRNode.RightHand;
+    [SerializeField] private InputActionProperty _shootAction;
+    [SerializeField] private XRNode _controllerNode = XRNode.RightHand;
+
+    // Properties for external access if needed
+    public float ShootPower
+    {
+        get => _shootPower;
+        set => _shootPower = value;
+    }
+
+    public float FireRate
+    {
+        get => _fireRate;
+        set => _fireRate = Mathf.Max(0.01f, value);
+    }
 
     private void OnEnable()
     {
-        shootAction.action?.Enable();
+        _shootAction.action?.Enable();
     }
 
     private void OnDisable()
     {
-        shootAction.action?.Disable();
+        _shootAction.action?.Disable();
     }
 
     private void Update()
     {
-        if (shootAction.action?.triggered == true && Time.time >= nextFire)
+        if (_shootAction.action?.triggered == true && Time.time >= _nextFireTime)
         {
-            nextFire = Time.time + fireRate;
+            _nextFireTime = Time.time + _fireRate;
             Shoot();
         }
     }
@@ -44,31 +57,29 @@ public class Gun : MonoBehaviour
     private void Shoot()
     {
         // Play sound
-        if (source != null && laserSound != null)
+        if (_audioSource != null && _laserSound != null)
         {
-            source.PlayOneShot(laserSound);
+            _audioSource.PlayOneShot(_laserSound);
         }
 
         // Spawn projectile
-        if (laser != null && barrelLocation != null)
+        if (_laserPrefab != null && _barrelLocation != null)
         {
-            GameObject spawnedLaser = Instantiate(laser, barrelLocation.position, barrelLocation.rotation);
+            GameObject spawnedLaser = Instantiate(_laserPrefab, _barrelLocation.position, _barrelLocation.rotation);
             if (spawnedLaser.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
-                rb.AddForce(barrelLocation.forward * shootPower);
+                rb.AddForce(_barrelLocation.forward * _shootPower);
             }
 
-            // Destroy projectile after lifetime
-            Destroy(spawnedLaser, projectileLifetime);
+            Destroy(spawnedLaser, _projectileLifetime);
         }
 
-        // Send haptic feedback
         SendHapticImpulse(0.5f, 0.2f);
     }
 
     private void SendHapticImpulse(float amplitude, float duration)
     {
-        UnityEngine.XR.InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
+        UnityEngine.XR.InputDevice device = InputDevices.GetDeviceAtXRNode(_controllerNode);
         if (device.isValid)
         {
             device.SendHapticImpulse(0, amplitude, duration);
