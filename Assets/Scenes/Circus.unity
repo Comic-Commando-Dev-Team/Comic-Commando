@@ -1073,26 +1073,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f629657661a704aac1b35534158c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 1892144849}
-  laserSound: {fileID: 8300000, guid: 5778d601007e4d24c90fc4b55995b7da, type: 3}
-  laser: {fileID: 114498028085176331, guid: 6732e2323ba29f5449249bbd708a9d80, type: 3}
-  barrelLocation: {fileID: 1450627313}
-  shootPower: 4
-  projectileLifetime: 5
-  fireRate: 0.05
-  shootAction:
+  _audioSource: {fileID: 1892144849}
+  _laserSound: {fileID: 8300000, guid: 5778d601007e4d24c90fc4b55995b7da, type: 3}
+  _laserPrefab: {fileID: 114498028085176331, guid: 6732e2323ba29f5449249bbd708a9d80, type: 3}
+  _barrelLocation: {fileID: 1450627313}
+  _shootPower: 120
+  _projectileLifetime: 5
+  _fireRate: 0.05
+  _shootAction:
     m_UseReference: 0
     m_Action:
       m_Name: Shoot
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: c2bb3adf-28e7-412e-908d-288921b73232
+      m_Id: 8d158d4a-118f-4d9e-8a5f-a2ca1f6ae9e7
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 64e233ad-4891-4154-9965-5068e365edbb
-        m_Path: <QuestTouchPlusController>/triggerPressed
+        m_Id: 33c67fd3-6999-4065-9fc8-990c62183724
+        m_Path: <QuestTouchPlusController>/trigger
         m_Interactions: Press
         m_Processors: 
         m_Groups: 
@@ -1100,7 +1100,7 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  controllerNode: 5
+  _controllerNode: 5
 --- !u!1 &2011262559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7277802327414017194, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
