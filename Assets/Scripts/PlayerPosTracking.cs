@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerPosTracking : MonoBehaviour
 {
-    [SerializeField] GameObject Player;
-    [SerializeField] float MovementSpeed = 0.3f;
-    float MovementVelocity;
+    [SerializeField] private GameObject Player;
+    [SerializeField] private float MovementSpeed = 0.3f;
+    private float MovementVelocity;
     void Start()
     {
         MovementVelocity = MovementSpeed * Time.deltaTime;
