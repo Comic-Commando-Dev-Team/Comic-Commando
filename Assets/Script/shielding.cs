@@ -16,7 +16,7 @@ public class Shielding : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("EnemyProjectile"))
         {
             Destroy(collision.gameObject);
             Debug.Log("Bullet hit the shield");
