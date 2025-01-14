@@ -5,6 +5,28 @@ TagManager:
   serializedVersion: 3
   tags:
   - Anchor
+  - QDSUIToggleBorderlessButton
+  - QDSUISharedThemeColor
+  - QDSUIIcon
+  - QDSUIBorderlessButton
+  - QDSUIAccentColor
+  - QDSUISecondaryButton
+  - QDSUIToggleButton
+  - QDSUITextSecondaryColor
+  - Locomotion
+  - PassThrough
+  - PassThroughButton
+  - LocoButton
+  - LocoText
+  - SamplesInfoPanel
+  - QDSUIDestructiveButton
+  - QDSUIPrimaryButton
+  - QDSUIToggleCheckboxRadio
+  - QDSUIToggleSwitch
+  - QDSUITooltip
+  - QDSUITextInputField
+  - QDSUISection
+  - Bullet
   - Enemy
   - EnemyProjectile
   layers:
