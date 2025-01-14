@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
+using UnityEngine.VFX;
 
 public class WaterGun : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class WaterGun : MonoBehaviour
     [SerializeField] private XRNode _controllerNode = XRNode.LeftHand;
 
     [Header("Projectile")]
-    [SerializeField] private GameObject _waterProjectile;
+    [SerializeField] private VisualEffect _waterVisualEffect;
 
     private void OnEnable()
     {
@@ -45,20 +46,20 @@ public class WaterGun : MonoBehaviour
             _audioSource.PlayOneShot(_WaterSound);
         }
 
-        // Enable the water projectile
-        if (_waterProjectile != null)
+        // Enable the visual effect
+        if (_waterVisualEffect != null)
         {
-            _waterProjectile.SetActive(true);
+            _waterVisualEffect.SetFloat("SpawnRate", 15000f);
         }
     }
 
     private void StopShooting()
     {
-         //Disable the water projectile
-        if (_waterProjectile != null)
-         {
-             _waterProjectile.SetActive(false);
-         }
+        // Disable the visual effect
+        if (_waterVisualEffect != null)
+        {
+            _waterVisualEffect.SetFloat("SpawnRate", 0f);
+        }
 
         // Stop the audio source
         if (_audioSource != null)
