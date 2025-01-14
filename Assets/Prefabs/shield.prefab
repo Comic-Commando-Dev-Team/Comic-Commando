@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2303038794093613713}
   - component: {fileID: 949648819939599343}
   - component: {fileID: 5965984631321022459}
+  - component: {fileID: -175335351772775579}
   m_Layer: 0
   m_Name: shield
   m_TagString: Untagged
@@ -108,3 +109,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-175335351772775579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8736452912255018215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a1d64520cb66248b6d40f3ac3415d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
