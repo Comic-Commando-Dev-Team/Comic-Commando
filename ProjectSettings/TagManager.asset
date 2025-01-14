@@ -27,6 +27,8 @@ TagManager:
   - QDSUITextInputField
   - QDSUISection
   - Bullet
+  - Enemy
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
