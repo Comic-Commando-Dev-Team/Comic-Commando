@@ -6,10 +6,10 @@ public class Gun : MonoBehaviour
 {
     [Header("Audio")]
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _laserSound;
+    [SerializeField] private AudioClip _RubberSound;
 
     [Header("Projectile")]
-    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _RubberPrefab;
     [SerializeField] private Transform _barrelLocation;
     [SerializeField] private float _shootPower = 100f;
     [SerializeField] private float _projectileLifetime = 5f;
@@ -57,15 +57,15 @@ public class Gun : MonoBehaviour
     private void Shoot()
     {
         // Play sound
-        if (_audioSource != null && _laserSound != null)
+        if (_audioSource != null && _RubberSound != null)
         {
-            _audioSource.PlayOneShot(_laserSound);
+            _audioSource.PlayOneShot(_RubberSound);
         }
 
         // Spawn projectile
-    if (_laserPrefab != null && _barrelLocation != null)
+    if (_RubberPrefab != null && _barrelLocation != null)
     {
-        GameObject spawnedLaser = Instantiate(_laserPrefab, _barrelLocation.position, _barrelLocation.rotation);
+        GameObject spawnedLaser = Instantiate(_RubberPrefab, _barrelLocation.position, _barrelLocation.rotation);
         
         // Set rotation to X = 90
         spawnedLaser.transform.rotation = Quaternion.Euler(90, spawnedLaser.transform.rotation.eulerAngles.y, spawnedLaser.transform.rotation.eulerAngles.z);
