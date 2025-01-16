@@ -338,9 +338,10 @@ GameObject:
   - component: {fileID: 4479589276206905100}
   - component: {fileID: 5752653328172100161}
   - component: {fileID: 5304241483974727962}
+  - component: {fileID: -1699122299617581158}
   m_Layer: 0
   m_Name: ClownHead
-  m_TagString: Enemy
+  m_TagString: EnemyHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -467,6 +468,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Projectile: {fileID: 3899250932950033288, guid: 96f3f1fd2c7e80e4cb2307b33b870194, type: 3}
   FiringRate: 1
+  IsFiring: 1
+--- !u!54 &-1699122299617581158
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688932045829133589}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6973164128060713816
 GameObject:
   m_ObjectHideFlags: 0
