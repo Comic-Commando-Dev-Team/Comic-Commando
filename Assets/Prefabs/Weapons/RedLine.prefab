@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7821657426262332508}
   m_Layer: 0
   m_Name: RedLine
-  m_TagString: Untagged
+  m_TagString: Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
