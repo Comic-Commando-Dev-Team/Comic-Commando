@@ -29,6 +29,9 @@ TagManager:
   - Bullet
   - Enemy
   - EnemyProjectile
+  - Spawner
+  - EnemyWalker
+  - EnemyHead
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -9,21 +10,25 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField, Min(1)] private bool Spawning = true;
     [Header("Multiple enemies settings")] 
     [SerializeField, Min(1), Range(1,100)] int MaxEnemyType = 3;
-    private void Update()
+
+    private IEnumerator SpawnEnemies()
     {
-        if (EnemyToSpawn != null)
+        while (Spawning) {
+            int EnemyCount = GameObject.FindGameObjectsWithTag(EnemyToSpawn.tag).Length;
+            if (EnemyCount <= MaxEnemyType) {
+                Instantiate(EnemyToSpawn, transform.position, transform.rotation);
+            }
+            yield return new WaitForSeconds(SpawnDelayInSeconds);
+        }
+        
+    }
+    private void Start()
+    {
+        if (EnemyToSpawn != null && Spawning)
         {
-            if (Spawning) InvokeRepeating("SpawnEnemy", 3, SpawnDelayInSeconds);
+            StartCoroutine (SpawnEnemies());
         }
 
-    }
-    void SpawnEnemy()
-    {
-        int EnemyCount = GameObject.FindGameObjectsWithTag(EnemyToSpawn.tag).Length;
-        if (EnemyCount <= MaxEnemyType)
-        {
-            GameObject.Instantiate(EnemyToSpawn, transform.position, transform.rotation);
-        }
     }
 
 }
