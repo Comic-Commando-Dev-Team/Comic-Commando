@@ -15,6 +15,12 @@ public class WaterGun : MonoBehaviour
 
     [Header("Projectile")]
     [SerializeField] private VisualEffect _waterVisualEffect;
+    [SerializeField] public Transform _barrelLocation;
+    RaycastHit hit;
+
+    private float fireRate = 1f / 3f; // 3 razy na sekundę
+    private float nextFireTime = 0f;
+    private int hitCount = 0;
 
     private void OnEnable()
     {
@@ -32,7 +38,34 @@ public class WaterGun : MonoBehaviour
         {
             Shoot();
         }
-        else if (_shootAction.action?.ReadValue<float>() == 0)
+        
+        if (_shootAction.action?.ReadValue<float>() > 0)
+        {
+            if (Time.time >= nextFireTime)
+            {
+                nextFireTime = Time.time + fireRate;
+
+                if (Physics.Raycast(_barrelLocation.position, transform.TransformDirection(Vector3.forward), out hit, 4))
+                {
+                    Debug.DrawRay(_barrelLocation.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
+                    Debug.Log("Did Hit");
+
+                    KillColownHead killColownHead = hit.collider.GetComponent<KillColownHead>();
+
+                    if (killColownHead != null)
+                    {
+                        hitCount++;
+                        if (hitCount >= 3)
+                        {
+                            killColownHead.HandleDestruction();
+                            hitCount = 0; // Reset the hit count after destruction
+                        }
+                    }
+                }
+            }
+        }
+
+        if (_shootAction.action?.ReadValue<float>() == 0)
         {
             StopShooting();
         }
