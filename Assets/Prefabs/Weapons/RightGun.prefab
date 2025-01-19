@@ -137,8 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 2758356654756094886}
-  _laserSound: {fileID: 8300000, guid: 75cdf28e0a643b5419c1244ee4347e11, type: 3}
-  _laserPrefab: {fileID: 4550656281547284982, guid: fd96f80152a1a464391739115455bb9e, type: 3}
+  _RubberSound: {fileID: 0}
+  _RubberPrefab: {fileID: 4550656281547284982, guid: fd96f80152a1a464391739115455bb9e, type: 3}
   _barrelLocation: {fileID: 8182864001334908121}
   _shootPower: 1420
   _projectileLifetime: 5
