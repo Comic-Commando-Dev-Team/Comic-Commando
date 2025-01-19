@@ -2,28 +2,18 @@ using UnityEngine;
 
 public class BackgroundMusicManager : MonoBehaviour
 {
-    public AudioClip[] musicTracks; // Tablica z utworami
+    [SerializeField] private AudioClip[] musicTracks;
+
     private AudioSource audioSource;
     private int currentTrackIndex = 0;
 
     void Start()
     {
-        // Pobierz AudioSource
         audioSource = GetComponent<AudioSource>();
 
-        // Ustaw pierwszy utw�r i zacznij odtwarzanie
         if (musicTracks.Length > 0)
         {
             PlayTrack(currentTrackIndex);
-        }
-    }
-
-    void Update()
-    {
-        // Sprawd�, czy utw�r si� sko�czy�
-        if (!audioSource.isPlaying)
-        {
-            NextTrack();
         }
     }
 
@@ -33,9 +23,17 @@ public class BackgroundMusicManager : MonoBehaviour
         audioSource.Play();
     }
 
-    private void NextTrack()
+    private void PlayNextTrack()
     {
-        currentTrackIndex = (currentTrackIndex + 1) % musicTracks.Length; // Przejd� do nast�pnego utworu
+        currentTrackIndex = (currentTrackIndex + 1) % musicTracks.Length;
         PlayTrack(currentTrackIndex);
+    }
+
+    void Update()
+    {
+        if (!audioSource.isPlaying)
+        {
+            PlayNextTrack();
+        }
     }
 }
