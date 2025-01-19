@@ -11,7 +11,7 @@ public class BackgroundMusicManager : MonoBehaviour
         // Pobierz AudioSource
         audioSource = GetComponent<AudioSource>();
 
-        // Ustaw pierwszy utwór i zacznij odtwarzanie
+        // Ustaw pierwszy utwï¿½r i zacznij odtwarzanie
         if (musicTracks.Length > 0)
         {
             PlayTrack(currentTrackIndex);
@@ -20,7 +20,7 @@ public class BackgroundMusicManager : MonoBehaviour
 
     void Update()
     {
-        // SprawdŸ, czy utwór siê skoñczy³
+        // Sprawdï¿½, czy utwï¿½r siï¿½ skoï¿½czyï¿½
         if (!audioSource.isPlaying)
         {
             NextTrack();
@@ -35,7 +35,7 @@ public class BackgroundMusicManager : MonoBehaviour
 
     private void NextTrack()
     {
-        currentTrackIndex = (currentTrackIndex + 1) % musicTracks.Length; // PrzejdŸ do nastêpnego utworu
+        currentTrackIndex = (currentTrackIndex + 1) % musicTracks.Length; // Przejdï¿½ do nastï¿½pnego utworu
         PlayTrack(currentTrackIndex);
     }
 }
