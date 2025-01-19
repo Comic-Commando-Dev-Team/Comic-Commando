@@ -406,6 +406,8 @@ MonoBehaviour:
   leftHand: {fileID: 1437058698}
   rightHand: {fileID: 2055691917}
   heightThreshold: 1.9
+  isPaused: 0
+  handsLowered: 1
 --- !u!4 &115464488
 Transform:
   m_ObjectHideFlags: 0
@@ -873,7 +875,7 @@ Transform:
   m_GameObject: {fileID: 719501584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4469922, y: 3.4272199, z: 1.8599192}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
