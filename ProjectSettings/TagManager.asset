@@ -29,6 +29,7 @@ TagManager:
   - Bullet
   - Enemy
   - EnemyProjectile
+  - Laser
   layers:
   - Default
   - TransparentFX
