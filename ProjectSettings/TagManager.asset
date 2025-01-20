@@ -30,6 +30,9 @@ TagManager:
   - Enemy
   - EnemyProjectile
   - Laser
+  - Spawner
+  - EnemyWalker
+  - EnemyHead
   layers:
   - Default
   - TransparentFX
