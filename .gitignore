@@ -345,9 +345,11 @@ publish/
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
-# and Unity packages manifest
+# Unity packages manifest
 !**/[Pp]ackages/manifest.json
 !**/[Pp]ackages/packages-lock.json
+# and packages imported from asset store
+!**/Assets/Packages/*
 # NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
