@@ -469,5 +469,7 @@ tools/**
 # Unity Android build artifacts
 .utmp
 
-# Unity generated build debug logs
+# Unity generated build caches, logs, and other files
 *DoNotShip*
+*DontShip*
+TempAssembly.dll
