@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Circus.unity
+    path: Assets/Scenes/EnemyTestingRange.unity
+    guid: c300be0f75c37cc4ba177de5d1893aae
+  - enabled: 1
+    path: Assets/Scenes/TestingCircus.unity
     guid: a744bfc825e5c0440a831b34cf6641da
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
