@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 29cdcf73a1c9c404193c50e6dc34e47f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 115912
+  packageName: Horror circus tents
+  packageVersion: 1.0
+  assetPath: Assets/_HorrorCircusTents/FirstTent/Materials/tent1_wire_255255255_color.mat
+  uploadId: 239271

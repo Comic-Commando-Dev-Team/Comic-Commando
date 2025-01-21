@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a2991a03359ecf049a1a006c200406cc
+timeCreated: 1520702090
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 115912
+  packageName: Horror circus tents
+  packageVersion: 1.0
+  assetPath: Assets/_HorrorCircusTents/__CubemapsShaders/ASE_Standart.shader
+  uploadId: 239271

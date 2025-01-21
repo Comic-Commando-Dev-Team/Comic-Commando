@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d80ce36fa99d2154baaaedf614de68a5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 115912
+  packageName: Horror circus tents
+  packageVersion: 1.0
+  assetPath: Assets/_HorrorCircusTents/Prefabs/FirstTent.prefab
+  uploadId: 239271
