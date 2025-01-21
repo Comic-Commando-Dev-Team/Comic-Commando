@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 0}
-  MovementSpeed: 0.3
+  MovementSpeed: 0.6
   Animator: {fileID: 0}
 --- !u!65 &6992715188488463432
 BoxCollider:
