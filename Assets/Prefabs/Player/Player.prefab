@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4170992074656974196}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: c423851e-8bdb-4063-8eec-b686a76da3a8
+  instanceId: 82ed9c09-70f8-4caa-a415-c2299bbe9dd2
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
