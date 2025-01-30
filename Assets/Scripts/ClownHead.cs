@@ -79,8 +79,7 @@ public class ClownHead : MonoBehaviour
         if (shootPoint != null && projectilePrefab != null)
         {
             GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, transform.rotation);
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (projectile.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 rb.linearVelocity = transform.forward * projectileSpeed;
             }
