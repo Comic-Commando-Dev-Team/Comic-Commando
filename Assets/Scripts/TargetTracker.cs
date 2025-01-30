@@ -14,14 +14,14 @@ public class TargetTracker : MonoBehaviour
 
     public GameObject CurrentTarget => currentTarget;
 
-    private void Start()
+    private void Awake()
     {
         FindTarget();
     }
 
     private void Update()
     {
-        if (currentTarget == null || Time.time >= nextSearchTime)
+        if (currentTarget == null && Time.time >= nextSearchTime)
         {
             FindTarget();
             nextSearchTime = Time.time + targetRefreshRate;

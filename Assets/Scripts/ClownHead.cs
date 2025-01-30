@@ -94,16 +94,27 @@ public class ClownHead : MonoBehaviour
 
         Vector3 targetPos = targetTracker.CurrentTarget.transform.position;
         Vector3 newTargetPosition;
+        int maxAttempts = 10;
+        int attempts = 0;
 
         do
         {
             // Get random point around player
             Vector2 randomCircle = Random.insideUnitCircle.normalized * repositionDistance;
             newTargetPosition = new Vector3(targetPos.x + randomCircle.x, transform.position.y, targetPos.z + randomCircle.y);
+            attempts++;
         }
-        while (!IsValidPosition(newTargetPosition));
+        while (!IsValidPosition(newTargetPosition) && attempts < maxAttempts);
 
-        targetPosition = newTargetPosition;
+        if (attempts < maxAttempts)
+        {
+            targetPosition = newTargetPosition;
+        }
+        else
+        {
+            // Fallback to current position if no valid position found
+            targetPosition = transform.position;
+        }
     }
 
     private bool IsValidPosition(Vector3 position)
