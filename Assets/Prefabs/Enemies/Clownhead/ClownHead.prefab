@@ -181,11 +181,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc1d345384b94657b0079261aa50ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 2
-  stoppingDistance: 5
-  repositionDistance: 8
+  movementSpeed: 10
+  stoppingDistance: 15
+  repositionDistance: 20
   projectilePrefab: {fileID: 4550656281547284982, guid: fd96f80152a1a464391739115455bb9e, type: 3}
   shootPoint: {fileID: 8058152115029321579}
   attackRate: 2
-  projectileSpeed: 10
+  projectileSpeed: 12
   shotsBeforeReposition: 3

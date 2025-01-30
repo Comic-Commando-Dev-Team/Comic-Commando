@@ -1,53 +1,104 @@
 using UnityEngine;
-using System.Collections;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public enum SpawnType { Point, Area }
+
+    [Header("Spawner Settings")]
+    [SerializeField] private SpawnType spawnType = SpawnType.Point;
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField, Range(1, 100)] private int enemySpawnDelayInSeconds = 5;
-    [SerializeField, Range(1, 100)] private int maxEnemyCount = 10;
+    [SerializeField, Min(1)] private float spawnInterval = 5f;
+    [SerializeField] private float spawnIntervalRandomness = 1f;
+    [SerializeField, Min(1)] private int maxEnemyCount = 10;
+
+    [Header("Area Settings")]
+    [SerializeField, Min(1)] private float spawnRadius = 5f;
+
+    private float nextSpawnTime;
+    private int currentEnemyCount;
 
     private void Start()
     {
-        if (enemyPrefab == null)
-        {
-            Debug.LogError("Enemy Prefab is not assigned to the spawner!");
-            return;
-        }
-        StartCoroutine(SpawnEnemy());
+        nextSpawnTime = Time.time + GetRandomSpawnInterval();
     }
 
-    private IEnumerator SpawnEnemy()
+    private void Update()
     {
-        while (true)
+        if (currentEnemyCount >= maxEnemyCount) return;
+
+        if (Time.time >= nextSpawnTime)
         {
-            yield return new WaitForSeconds(enemySpawnDelayInSeconds);
+            SpawnEnemy();
+            nextSpawnTime = Time.time + GetRandomSpawnInterval();
+        }
+    }
 
-            try
+    private void SpawnEnemy()
+    {
+        if (enemyPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position;
+
+            if (spawnType == SpawnType.Area)
             {
-                if (enemyPrefab == null)
-                {
-                    Debug.LogError("Enemy Prefab is null!");
-                    yield break;
-                }
-
-                int currentEnemyCount = GameObject.FindGameObjectsWithTag(enemyPrefab.tag).Length;
-                Debug.Log($"Current enemy count: {currentEnemyCount}, Max allowed: {maxEnemyCount}");
-
-                if (currentEnemyCount < maxEnemyCount)
-                {
-                    Instantiate(enemyPrefab, transform.position, transform.rotation);
-                }
-                else
-                {
-                    Debug.Log("Max enemy count reached, not spawning more enemies.");
-                }
+                spawnPosition += Random.insideUnitSphere * spawnRadius;
+                spawnPosition.y = transform.position.y; // Keep the same height as the spawner
             }
-            catch (System.Exception ex)
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            currentEnemyCount++;
+
+            if (enemy.TryGetComponent<HealthController>(out HealthController healthController))
             {
-                Debug.LogError($"Exception in SpawnEnemy: {ex.Message}");
-                yield break;
+                healthController.OnDeath.AddListener(OnEnemyDestroyed);
             }
         }
     }
+
+    private float GetRandomSpawnInterval()
+    {
+        return spawnInterval + Random.Range(-spawnIntervalRandomness, spawnIntervalRandomness);
+    }
+
+    private void OnEnemyDestroyed()
+    {
+        currentEnemyCount--;
+    }
+
+    private void OnValidate()
+    {
+        if (spawnType == SpawnType.Area)
+        {
+            spawnRadius = Mathf.Max(1, spawnRadius);
+        }
+        else
+        {
+            spawnRadius = 0;
+        }
+
+        spawnInterval = Mathf.Max(0.1f, spawnInterval);
+        spawnIntervalRandomness = Mathf.Max(0, spawnIntervalRandomness);
+        maxEnemyCount = Mathf.Max(1, maxEnemyCount);
+
+        if (enemyPrefab != null && !enemyPrefab.TryGetComponent<HealthController>(out HealthController healthController))
+        {
+            Debug.LogWarning("Enemy prefab does not have a HealthController component. Enemy limit will not work.");
+        }
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        if (spawnType == SpawnType.Point)
+        {
+            Gizmos.DrawSphere(transform.position, 0.5f);
+        }
+        else if (spawnType == SpawnType.Area)
+        {
+            Gizmos.DrawWireSphere(transform.position, spawnRadius);
+        }
+    }
+#endif
 }
