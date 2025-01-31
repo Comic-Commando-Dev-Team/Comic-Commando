@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 769692018810547232}
   - component: {fileID: 8554539033188346438}
   - component: {fileID: -2334928981123206592}
+  - component: {fileID: 1824168656275780333}
   m_Layer: 0
-  m_Name: Rubber
+  m_Name: RubberBall
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,3 +137,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1824168656275780333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4550656281547284982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64bd58e910c9341539b47988dfcb967f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 50
+  targetTags:
+  - Enemy
+  - EnemyWalker
+  - EnemyHead
