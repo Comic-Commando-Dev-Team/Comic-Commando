@@ -6,8 +6,9 @@ public class ClownHead : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 2f;
-    [SerializeField] private float stoppingDistance = 5f;
-    [SerializeField] private float repositionDistance = 8f;
+    [SerializeField]
+    private float stoppingDistance = 10f
+    [SerializeField] private float repositionDistance = 12f;
 
     [Header("Attack")]
     [SerializeField] private GameObject projectilePrefab;
@@ -130,5 +131,11 @@ public class ClownHead : MonoBehaviour
     private void OnDeath()
     {
         Destroy(gameObject);
+    }
+
+    private void OnValidate()
+    {
+        // Stoping distance should be less than reposition distance
+        stoppingDistance = Mathf.Min(stoppingDistance, repositionDistance);
     }
 }
