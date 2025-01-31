@@ -31,7 +31,7 @@ public class ClownHead : MonoBehaviour
         targetTracker = GetComponent<TargetTracker>();
         healthController = GetComponent<HealthController>();
         healthController.OnDeath.AddListener(OnDeath);
-        scoreBoard = FindObjectOfType<ScoreBoard>();
+        scoreBoard = FindAnyObjectByType<ScoreBoard>();
     }
 
     private void Update()

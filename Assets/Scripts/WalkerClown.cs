@@ -27,7 +27,7 @@ public class WalkerClown : MonoBehaviour
         healthController = GetComponent<HealthController>();
         targetTracker = GetComponent<TargetTracker>();
         audioSource = GetComponent<AudioSource>();
-        scoreBoard = FindObjectOfType<ScoreBoard>();
+        scoreBoard = FindAnyObjectByType<ScoreBoard>();
 
         if (animator == null)
         {
