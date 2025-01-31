@@ -11,6 +11,7 @@ public class WalkerClown : MonoBehaviour
     [SerializeField] private int _damage = 10; // Przykładowa wartość obrażeń
     [SerializeField] private GameObject deathImagePrefab; // Prefab obrazka PNG
     [SerializeField] private AudioClip stopSound; // Dźwięk odtwarzany po zatrzymaniu
+    [SerializeField] private int points = 100; // Punkty za zniszczenie przeciwnika
 
     private Animator animator;
     private HealthController healthController;
@@ -18,6 +19,7 @@ public class WalkerClown : MonoBehaviour
     private AudioSource audioSource;
     private bool isStopped = false;
     private float lastStopSoundTime = -3f; // Czas ostatniego odtworzenia dźwięku
+    private ScoreBoard scoreBoard;
 
     void Start()
     {
@@ -25,6 +27,7 @@ public class WalkerClown : MonoBehaviour
         healthController = GetComponent<HealthController>();
         targetTracker = GetComponent<TargetTracker>();
         audioSource = GetComponent<AudioSource>();
+        scoreBoard = FindObjectOfType<ScoreBoard>();
 
         if (animator == null)
         {
@@ -124,6 +127,10 @@ public class WalkerClown : MonoBehaviour
                 if (healthController.CurrentHealth <= 0)
                 {
                     SpawnDeathImage();
+                    if (scoreBoard != null)
+                    {
+                        scoreBoard.AddScore(points);
+                    }
                     Destroy(gameObject);
                 }
             }
