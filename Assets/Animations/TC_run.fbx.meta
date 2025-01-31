@@ -739,5 +739,5 @@ AssetOrigin:
   productId: 49389
   packageName: True Horror - Clown (PBR)
   packageVersion: 1.0
-  assetPath: Assets/Prefabs/Enemies/WalkerClown/Animation/TC_run.fbx
+  assetPath: Assets/Animations/TC_run.fbx
   uploadId: 88689

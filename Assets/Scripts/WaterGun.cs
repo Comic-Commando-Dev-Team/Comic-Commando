@@ -50,7 +50,7 @@ public class WaterGun : MonoBehaviour
 
                 if (Physics.Raycast(_barrelLocation.position, transform.TransformDirection(Vector3.forward), out hit, 4))
                 {
-                    Debug.DrawRay(_barrelLocation.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
+                    Debug.DrawRay(_barrelLocation.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
                     Debug.Log("Did Hit");
 
                     if (hit.collider.TryGetComponent(out HealthController healthController))
