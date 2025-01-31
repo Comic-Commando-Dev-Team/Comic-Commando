@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(TargetTracker))]
 [RequireComponent(typeof(HealthController))]
@@ -6,31 +7,31 @@ public class ClownHead : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 2f;
-    [SerializeField]
-    private float stoppingDistance = 10f;
-    [SerializeField] private float repositionDistance = 12f;
+    [SerializeField] private float stoppingDistance = 10f;
+    [SerializeField] private float orbitSpeed = 2f;
 
     [Header("Attack")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private float attackRate = 2f;
     [SerializeField] private float projectileSpeed = 10f;
-    [SerializeField] private int shotsBeforeReposition = 3;
+
+    [Header("Death")]
+    [SerializeField] private GameObject deathImagePrefab; // Prefab obrazka PNG
+    [SerializeField] private int points = 100; // Punkty za zniszczenie przeciwnika
 
     private HealthController healthController;
     private TargetTracker targetTracker;
     private float nextAttackTime;
-    private Vector3 targetPosition;
-    private bool isRepositioning;
-    private int shotsFired;
+    private bool isOrbiting;
+    private ScoreBoard scoreBoard;
 
     private void Start()
     {
         targetTracker = GetComponent<TargetTracker>();
-        SetNewTargetPosition();
         healthController = GetComponent<HealthController>();
         healthController.OnDeath.AddListener(OnDeath);
-        shotsFired = 0;
+        scoreBoard = FindObjectOfType<ScoreBoard>();
     }
 
     private void Update()
@@ -43,36 +44,32 @@ public class ClownHead : MonoBehaviour
         // Look at player
         transform.LookAt(targetTracker.CurrentTarget.transform);
 
-        if (isRepositioning)
-        {
-            // Move to new position
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, movementSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-            {
-                isRepositioning = false;
-                shotsFired = 0;
-            }
-        }
-        else if (distanceToPlayer > stoppingDistance)
+        if (distanceToPlayer > stoppingDistance)
         {
             // Move towards player
+            isOrbiting = false;
             transform.position += transform.forward * (movementSpeed * Time.deltaTime);
         }
         else
         {
-            // Attack when in range
+            // Orbit around player and attack
+            isOrbiting = true;
+            OrbitAroundPlayer();
             if (Time.time >= nextAttackTime)
             {
                 Attack();
-                shotsFired++;
-                if (shotsFired >= shotsBeforeReposition)
-                {
-                    SetNewTargetPosition();
-                    isRepositioning = true;
-                }
             }
         }
+    }
+
+    private void OrbitAroundPlayer()
+    {
+        if (targetTracker.CurrentTarget == null) return;
+
+        // Calculate orbit position
+        Vector3 direction = (transform.position - targetTracker.CurrentTarget.transform.position).normalized;
+        Vector3 orbitPosition = Quaternion.Euler(0, orbitSpeed * Time.deltaTime, 0) * direction * stoppingDistance;
+        transform.position = targetTracker.CurrentTarget.transform.position + orbitPosition;
     }
 
     private void Attack()
@@ -88,44 +85,52 @@ public class ClownHead : MonoBehaviour
         nextAttackTime = Time.time + attackRate;
     }
 
-    private void SetNewTargetPosition()
+    private void OnTriggerEnter(Collider other)
     {
-        if (targetTracker.CurrentTarget == null) return;
-
-        Vector3 targetPos = targetTracker.CurrentTarget.transform.position;
-        Vector3 newTargetPosition;
-        int maxAttempts = 10;
-        int attempts = 0;
-
-        do
+        if (other.CompareTag("Bullet"))
         {
-            // Get random point around player
-            Vector2 randomCircle = Random.insideUnitCircle.normalized * repositionDistance;
-            newTargetPosition = new Vector3(targetPos.x + randomCircle.x, transform.position.y, targetPos.z + randomCircle.y);
-            attempts++;
-        }
-        while (!IsValidPosition(newTargetPosition) && attempts < maxAttempts);
+            if (healthController != null)
+            {
+                healthController.Damage(10); // Przykładowa wartość obrażeń
+                Debug.Log("Clown hit by bullet!");
+                Debug.Log($"Clown health: {healthController.CurrentHealth}");
 
-        if (attempts < maxAttempts)
-        {
-            targetPosition = newTargetPosition;
-        }
-        else
-        {
-            // Fallback to current position if no valid position found
-            targetPosition = transform.position;
+                // Check if health is zero and destroy the game object
+                if (healthController.CurrentHealth <= 0)
+                {
+                    SpawnDeathImage();
+                    if (scoreBoard != null)
+                    {
+                        scoreBoard.AddScore(points);
+                    }
+                    Destroy(gameObject);
+                }
+            }
         }
     }
 
-    private bool IsValidPosition(Vector3 position)
+    private void SpawnDeathImage()
     {
-        // Check if the position is above ground
-        RaycastHit hit;
-        if (Physics.Raycast(position + Vector3.up * 10, Vector3.down, out hit, 20f))
+        if (deathImagePrefab != null && targetTracker.CurrentTarget != null)
         {
-            return hit.collider != null && hit.point.y >= transform.position.y;
+            Vector3 spawnPosition = transform.position;
+            spawnPosition.y += 1; // Increase Y position by 1 unit
+
+            GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
+            StartCoroutine(DestroyAfterTime(deathImage, 2f));
+
+            // Rotate the image to face the player and adjust rotation on X axis
+            Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            lookRotation *= Quaternion.Euler(0, 90, 0); // Rotate 90 degrees on Y axis
+            deathImage.transform.rotation = lookRotation;
         }
-        return false;
+    }
+
+    private IEnumerator DestroyAfterTime(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(obj);
     }
 
     private void OnDeath()
@@ -135,7 +140,7 @@ public class ClownHead : MonoBehaviour
 
     private void OnValidate()
     {
-        // Stoping distance should be less than reposition distance
-        stoppingDistance = Mathf.Min(stoppingDistance, repositionDistance);
+        // Ensure stopping distance is positive
+        stoppingDistance = Mathf.Max(stoppingDistance, 0);
     }
 }

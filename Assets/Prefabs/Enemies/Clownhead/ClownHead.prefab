@@ -216,17 +216,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
-  rotationSpeed: 5
-  accelerationTime: 0.3
   stoppingDistance: 15
-  repositionDistance: 12
-  bobAmount: 0.5
-  bobSpeed: 2
-  projectilePrefab: {fileID: 4550656281547284982, guid: fd96f80152a1a464391739115455bb9e, type: 3}
+  orbitSpeed: 2
+  projectilePrefab: {fileID: 2767341905782943285, guid: 574dc0713c04cf740bdb00e8d3b6c170, type: 3}
   shootPoint: {fileID: 8058152115029321579}
   attackRate: 2
   projectileSpeed: 15
-  shotsBeforeReposition: 3
+  deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
+  points: 100
 --- !u!135 &5184646675071893832
 SphereCollider:
   m_ObjectHideFlags: 0

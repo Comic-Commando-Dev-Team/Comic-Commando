@@ -14,7 +14,7 @@ public class WaterGun : MonoBehaviour
     [SerializeField] private XRNode _controllerNode = XRNode.LeftHand;
 
     [Header("Projectile")]
-    [SerializeField] private int _damage = 1;
+    [SerializeField] private int _damage = 10;
     [SerializeField] private VisualEffect _waterVisualEffect;
     [SerializeField] public Transform _barrelLocation;
 
