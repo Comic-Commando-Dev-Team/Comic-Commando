@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 [RequireComponent(typeof(TargetTracker))]
 [RequireComponent(typeof(HealthController))]
@@ -8,16 +10,21 @@ public class WalkerClown : MonoBehaviour
     [SerializeField] private float stoppingDistance = 2f;
     [SerializeField] private int _damage = 10; // Przykładowa wartość obrażeń
     [SerializeField] private GameObject deathImagePrefab; // Prefab obrazka PNG
+    [SerializeField] private AudioClip stopSound; // Dźwięk odtwarzany po zatrzymaniu
 
     private Animator animator;
     private HealthController healthController;
     private TargetTracker targetTracker;
+    private AudioSource audioSource;
+    private bool isStopped = false;
+    private float lastStopSoundTime = -3f; // Czas ostatniego odtworzenia dźwięku
 
     void Start()
     {
         animator = GetComponent<Animator>();
         healthController = GetComponent<HealthController>();
         targetTracker = GetComponent<TargetTracker>();
+        audioSource = GetComponent<AudioSource>();
 
         if (animator == null)
         {
@@ -37,6 +44,9 @@ public class WalkerClown : MonoBehaviour
         {
             healthController.ChangeHealth(100 - healthController.CurrentHealth); // Set health to 100
         }
+
+        // Start playing random sounds
+        StartCoroutine(PlayRandomSound());
     }
 
     void Update()
@@ -51,6 +61,7 @@ public class WalkerClown : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         lookRotation *= Quaternion.Euler(0, 90, 0); // Add 90 degrees to the Y axis
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
+
         if (distance > stoppingDistance)
         {
             // Move towards the player
@@ -62,6 +73,8 @@ public class WalkerClown : MonoBehaviour
                 animator.SetBool("True_Clown_Run", true);
                 animator.SetBool("True_Clown_Idle", false);
             }
+
+            isStopped = false; // Reset the stopped state
         }
         else
         {
@@ -71,7 +84,30 @@ public class WalkerClown : MonoBehaviour
                 animator.SetBool("True_Clown_Run", false);
                 animator.SetBool("True_Clown_Idle", true);
             }
+
+            if (!isStopped)
+            {
+                isStopped = true;
+                StartCoroutine(HandleStopActions());
+            }
         }
+    }
+
+    private IEnumerator HandleStopActions()
+    {
+        yield return new WaitForSeconds(2f);
+
+        // Play stop sound with cooldown
+        if (audioSource != null && stopSound != null && Time.time - lastStopSoundTime >= 3f)
+        {
+            audioSource.PlayOneShot(stopSound);
+            lastStopSoundTime = Time.time; // Update the last play time
+        }
+
+        yield return new WaitForSeconds(3f);
+
+        // Reset the scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,15 +143,28 @@ public class WalkerClown : MonoBehaviour
             // Rotate the image to face the player and adjust rotation on X axis
             Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            lookRotation *= Quaternion.Euler(90, 0, 0); // Rotate 90 degrees on X axis
+            lookRotation *= Quaternion.Euler(0, 90, 0); // Rotate 90 degrees on Y axis
             deathImage.transform.rotation = lookRotation;
         }
     }
 
-    private System.Collections.IEnumerator DestroyAfterTime(GameObject obj, float delay)
+    private IEnumerator DestroyAfterTime(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
         Destroy(obj);
+    }
+
+    private IEnumerator PlayRandomSound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(3f, 10f));
+
+            if (audioSource != null && stopSound != null)
+            {
+                audioSource.PlayOneShot(stopSound);
+            }
+        }
     }
 }
 
