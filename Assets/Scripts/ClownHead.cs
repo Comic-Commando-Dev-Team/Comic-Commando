@@ -7,7 +7,7 @@ public class ClownHead : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 2f;
     [SerializeField]
-    private float stoppingDistance = 10f
+    private float stoppingDistance = 10f;
     [SerializeField] private float repositionDistance = 12f;
 
     [Header("Attack")]
