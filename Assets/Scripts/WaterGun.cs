@@ -11,7 +11,6 @@ public class WaterGun : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private InputActionProperty _shootAction;
-    [SerializeField] private XRNode _controllerNode = XRNode.LeftHand;
 
     [Header("Projectile")]
     [SerializeField] private int _damage = 10;
@@ -21,9 +20,8 @@ public class WaterGun : MonoBehaviour
 
     private RaycastHit hit;
 
-    private float fireRate = 1f / 3f; // 3 razy na sekundę
+    private float fireRate = 1f / 3f;
     private float nextFireTime = 0f;
-    private int hitCount = 0;
 
     private void OnEnable()
     {
