@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.XR;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Manages item switching functionality for VR hand interactions.
@@ -14,6 +12,9 @@ public class ItemSwitcher : MonoBehaviour
     [SerializeField]
     [Tooltip("The distance behind the head to trigger the switch")]
     private float _behindBackThreshold = 0.15f;
+    [SerializeField]
+    [Tooltip("The maximum distance between the hand and head to trigger the switch")]
+    private float _maxDistanceToHead = 0.5f;
     [SerializeField] private float _switchCooldown = 0.5f;
 
     [Header("Debug")]
@@ -137,7 +138,7 @@ public class ItemSwitcher : MonoBehaviour
         Vector3 handToHead = handPosition - headPosition;
         float dotProduct = Vector3.Dot(headForward, handToHead.normalized);
 
-        return dotProduct < -_behindBackThreshold;
+        return handToHead.magnitude <= _maxDistanceToHead && dotProduct < -_behindBackThreshold;
     }
 
     private bool CanSwitch()
