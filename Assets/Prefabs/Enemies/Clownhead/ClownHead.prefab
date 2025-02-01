@@ -228,7 +228,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2767341905782943285, guid: 574dc0713c04cf740bdb00e8d3b6c170, type: 3}
   shootPoint: {fileID: 8058152115029321579}
   attackRate: 2
-  projectileSpeed: 25
+  projectileSpeed: 40
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
   points: 100
   deathImageHeight: 1

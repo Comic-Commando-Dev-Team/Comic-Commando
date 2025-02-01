@@ -110,30 +110,6 @@ public class WalkerClown : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet"))
-        {
-            if (healthController != null)
-            {
-                healthController.Damage(_damage);
-                Debug.Log("Clown hit by bullet!");
-                Debug.Log($"Clown health: {healthController.CurrentHealth}");
-
-                // Check if health is zero and destroy the game object
-                if (healthController.CurrentHealth <= 0)
-                {
-                    SpawnDeathImage();
-                    if (scoreBoard != null)
-                    {
-                        scoreBoard.AddScore(points);
-                    }
-                    Destroy(gameObject);
-                }
-            }
-        }
-    }
-
     private void SpawnDeathImage()
     {
         if (deathImagePrefab != null && targetTracker.CurrentTarget != null)

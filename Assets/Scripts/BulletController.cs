@@ -15,7 +15,6 @@ public class BulletController : MonoBehaviour
     {
         GameObject hitObject = collision.gameObject;
 
-        Debug.Log($"Hit object: {hitObject.name} with tag: {hitObject.tag}");
 
         // Check if we hit a valid target
         bool isValidTarget = false;
@@ -28,14 +27,13 @@ public class BulletController : MonoBehaviour
             }
         }
 
-        Debug.Log($"Is valid target: {isValidTarget}");
-
         if (isValidTarget)
         {
             if (hitObject.TryGetComponent<HealthController>(out HealthController health))
             {
                 health.Damage(damage);
             }
+            Destroy(gameObject);
         }
     }
 }
