@@ -8,17 +8,17 @@ public class WalkerClown : MonoBehaviour
 {
     [SerializeField] private float speed = 2.0f;
     [SerializeField] private float stoppingDistance = 2f;
-    [SerializeField] private int _damage = 10; // Przykładowa wartość obrażeń
-    [SerializeField] private GameObject deathImagePrefab; // Prefab obrazka PNG
-    [SerializeField] private AudioClip stopSound; // Dźwięk odtwarzany po zatrzymaniu
-    [SerializeField] private int points = 100; // Punkty za zniszczenie przeciwnika
+    [SerializeField] private int _damage = 10;
+    [SerializeField] private GameObject deathImagePrefab;
+    [SerializeField] private AudioClip stopSound;
+    [SerializeField] private int points = 100;
 
     private Animator animator;
     private HealthController healthController;
     private TargetTracker targetTracker;
     private AudioSource audioSource;
     private bool isStopped = false;
-    private float lastStopSoundTime = -3f; // Czas ostatniego odtworzenia dźwięku
+    private float lastStopSoundTime = -3f;
     private ScoreBoard scoreBoard;
 
     void Start()
@@ -47,9 +47,6 @@ public class WalkerClown : MonoBehaviour
         {
             healthController.ChangeHealth(100 - healthController.CurrentHealth); // Set health to 100
         }
-
-        // Start playing random sounds
-        StartCoroutine(PlayRandomSound());
     }
 
     void Update()
@@ -159,19 +156,6 @@ public class WalkerClown : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         Destroy(obj);
-    }
-
-    private IEnumerator PlayRandomSound()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(3f, 10f));
-
-            if (audioSource != null && stopSound != null)
-            {
-                audioSource.PlayOneShot(stopSound);
-            }
-        }
     }
 }
 
