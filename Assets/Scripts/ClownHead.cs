@@ -1,14 +1,14 @@
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(TargetTracker))]
 [RequireComponent(typeof(HealthController))]
 public class ClownHead : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float movementSpeed = 2f;
+    [SerializeField] private float baseMovementSpeed = 2f;
     [SerializeField] private float stoppingDistance = 10f;
-    [SerializeField] private float orbitSpeed = 2f;
+    [SerializeField] private float baseOrbitSpeed = 2f;
+    [SerializeField] private float speedVariationRange = 0.5f;
 
     [Header("Attack")]
     [SerializeField] private GameObject projectilePrefab;
@@ -17,130 +17,155 @@ public class ClownHead : MonoBehaviour
     [SerializeField] private float projectileSpeed = 10f;
 
     [Header("Death")]
-    [SerializeField] private GameObject deathImagePrefab; // Prefab obrazka PNG
-    [SerializeField] private int points = 100; // Punkty za zniszczenie przeciwnika
+    [SerializeField] private GameObject deathImagePrefab;
+    [SerializeField] private int points = 100;
+    [SerializeField] private float deathImageHeight = 1f;
+    [SerializeField] private float deathImageDuration = 2f;
 
     private HealthController healthController;
     private TargetTracker targetTracker;
-    private float nextAttackTime;
-    private bool isOrbiting;
     private ScoreBoard scoreBoard;
 
-    private void Start()
+    private float nextAttackTime;
+    private float currentMovementSpeed;
+    private float currentOrbitSpeed;
+    private int orbitDirection;
+
+    private const float MIN_STOPPING_DISTANCE = 0f;
+
+    private void Awake()
+    {
+        InitializeComponents();
+        InitializeMovementParameters();
+    }
+
+    private void InitializeComponents()
     {
         targetTracker = GetComponent<TargetTracker>();
         healthController = GetComponent<HealthController>();
-        healthController.OnDeath.AddListener(OnDeath);
         scoreBoard = FindAnyObjectByType<ScoreBoard>();
+
+        if (healthController != null)
+        {
+            healthController.OnDeath.AddListener(OnDeath);
+        }
+    }
+
+    private void InitializeMovementParameters()
+    {
+        // Randomize initial speeds within variation range
+        currentMovementSpeed = baseMovementSpeed + Random.Range(-speedVariationRange, speedVariationRange);
+        currentOrbitSpeed = baseOrbitSpeed + Random.Range(-speedVariationRange, speedVariationRange);
+
+        // Randomly choose orbit direction
+        orbitDirection = Random.value > 0.5f ? 1 : -1;
     }
 
     private void Update()
     {
-        if (healthController.IsDead) return;
-        if (targetTracker.CurrentTarget == null) return;
+        if (ShouldSkipUpdate()) return;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
+        HandleMovement();
+    }
 
-        // Look at player
-        transform.LookAt(targetTracker.CurrentTarget.transform);
+    private bool ShouldSkipUpdate()
+    {
+        return healthController.IsDead || targetTracker.CurrentTarget == null;
+    }
 
-        if (distanceToPlayer > stoppingDistance)
+    private void HandleMovement()
+    {
+        Vector3 targetPosition = targetTracker.CurrentTarget.transform.position;
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        transform.LookAt(targetPosition);
+
+        if (distanceToTarget > stoppingDistance)
         {
-            // Move towards player
-            isOrbiting = false;
-            transform.position += transform.forward * (movementSpeed * Time.deltaTime);
+            MoveTowardsTarget();
         }
         else
         {
-            // Orbit around player and attack
-            isOrbiting = true;
-            OrbitAroundPlayer();
-            if (Time.time >= nextAttackTime)
-            {
-                Attack();
-            }
+            OrbitAroundTarget();
+            AttemptAttack();
         }
     }
 
-    private void OrbitAroundPlayer()
+    private void MoveTowardsTarget()
+    {
+        transform.position += transform.forward * (currentMovementSpeed * Time.deltaTime);
+    }
+
+    private void OrbitAroundTarget()
     {
         if (targetTracker.CurrentTarget == null) return;
 
-        // Calculate orbit position
-        Vector3 direction = (transform.position - targetTracker.CurrentTarget.transform.position).normalized;
-        Vector3 orbitPosition = Quaternion.Euler(0, orbitSpeed * Time.deltaTime, 0) * direction * stoppingDistance;
-        transform.position = targetTracker.CurrentTarget.transform.position + orbitPosition;
+        Vector3 targetPosition = targetTracker.CurrentTarget.transform.position;
+        Vector3 directionToTarget = (transform.position - targetPosition).normalized;
+
+        float orbitAngle = currentOrbitSpeed * orbitDirection * Time.deltaTime;
+        Vector3 orbitPosition = Quaternion.Euler(0, orbitAngle, 0) * directionToTarget * stoppingDistance;
+
+        transform.position = targetPosition + orbitPosition;
+    }
+
+    private void AttemptAttack()
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            Attack();
+        }
     }
 
     private void Attack()
     {
-        if (shootPoint != null && projectilePrefab != null)
+        if (!IsValidForAttack()) return;
+
+        GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, transform.rotation);
+        if (projectile.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
-            GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, transform.rotation);
-            if (projectile.TryGetComponent<Rigidbody>(out Rigidbody rb))
-            {
-                rb.linearVelocity = transform.forward * projectileSpeed;
-            }
+            rb.linearVelocity = transform.forward * projectileSpeed;
         }
+
         nextAttackTime = Time.time + attackRate;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool IsValidForAttack()
     {
-        if (other.CompareTag("Bullet"))
-        {
-            if (healthController != null)
-            {
-                healthController.Damage(10); // Przykładowa wartość obrażeń
-                Debug.Log("Clown hit by bullet!");
-                Debug.Log($"Clown health: {healthController.CurrentHealth}");
-
-                // Check if health is zero and destroy the game object
-                if (healthController.CurrentHealth <= 0)
-                {
-                    SpawnDeathImage();
-                    if (scoreBoard != null)
-                    {
-                        scoreBoard.AddScore(points);
-                    }
-                    Destroy(gameObject);
-                }
-            }
-        }
+        return shootPoint != null && projectilePrefab != null;
     }
 
     private void SpawnDeathImage()
     {
-        if (deathImagePrefab != null && targetTracker.CurrentTarget != null)
-        {
-            Vector3 spawnPosition = transform.position;
-            spawnPosition.y += 1; // Increase Y position by 1 unit
+        if (deathImagePrefab == null || targetTracker.CurrentTarget == null) return;
 
-            GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
-            StartCoroutine(DestroyAfterTime(deathImage, 2f));
+        Vector3 spawnPosition = transform.position + Vector3.up * deathImageHeight;
+        GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
 
-            // Rotate the image to face the player and adjust rotation on X axis
-            Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            lookRotation *= Quaternion.Euler(0, 90, 0); // Rotate 90 degrees on Y axis
-            deathImage.transform.rotation = lookRotation;
-        }
+        RotateDeathImageTowardsPlayer(deathImage);
+        Destroy(deathImage, deathImageDuration);
     }
 
-    private IEnumerator DestroyAfterTime(GameObject obj, float delay)
+    private void RotateDeathImageTowardsPlayer(GameObject deathImage)
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(obj);
+        Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        deathImage.transform.rotation = lookRotation * Quaternion.Euler(0, 90, 0);
     }
 
     private void OnDeath()
     {
+        if (scoreBoard != null)
+        {
+            scoreBoard.AddScore(points);
+        }
+        SpawnDeathImage();
         Destroy(gameObject);
     }
 
     private void OnValidate()
     {
-        // Ensure stopping distance is positive
-        stoppingDistance = Mathf.Max(stoppingDistance, 0);
+        stoppingDistance = Mathf.Max(stoppingDistance, MIN_STOPPING_DISTANCE);
+        speedVariationRange = Mathf.Max(speedVariationRange, 0f);
     }
 }
