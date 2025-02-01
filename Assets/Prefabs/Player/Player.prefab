@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6062235083699516128}
+  - component: {fileID: 1081463962707614740}
   m_Layer: 0
   m_Name: PlayerLeftHand
   m_TagString: Untagged
@@ -31,6 +32,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8478192997665433455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1081463962707614740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339210100278713675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d98cbb0d27245bc8bfb0a282187b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controllerNode: 4
+  _headTransform: {fileID: 338310186028749789}
+  _behindBackThreshold: 0.15
+  _switchCooldown: 0.5
+  _showDebugGizmos: 0
 --- !u!1 &587906161133112020
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7207497756066737483}
+  - component: {fileID: 7990883238035400256}
   m_Layer: 0
   m_Name: PlayerRightHand
   m_TagString: Untagged
@@ -285,6 +304,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2503708631519564574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7990883238035400256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019570584075984011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d98cbb0d27245bc8bfb0a282187b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controllerNode: 5
+  _headTransform: {fileID: 338310186028749789}
+  _behindBackThreshold: 0.15
+  _switchCooldown: 0.5
+  _showDebugGizmos: 0
 --- !u!1 &2806774674242740200
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: 4a586b01-6505-415e-8f25-5026095552b9
+  instanceId: de9ccedd-3f16-4d06-8d0b-64da1171cf27
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
