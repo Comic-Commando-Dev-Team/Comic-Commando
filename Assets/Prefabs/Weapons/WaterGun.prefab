@@ -396,9 +396,18 @@ MonoBehaviour:
         m_Groups: 
         m_Action: Shoot
         m_Flags: 0
+      - m_Name: 
+        m_Id: f04eacc7-b2db-49b4-8b9c-b5be61b720c4
+        m_Path: <OculusTouchController>/triggerPressed
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Shoot
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   _controllerNode: 4
+  _damage: 1
   _waterVisualEffect: {fileID: 5112796504667954517}
   _barrelLocation: {fileID: 4046112767250464009}
 --- !u!82 &2548713360429479129
