@@ -45,7 +45,7 @@ public class WalkerClown : MonoBehaviour
 
         if (healthController != null)
         {
-            healthController.ChangeHealth(100 - healthController.CurrentHealth); // Set health to 100
+            healthController.OnDeath.AddListener(OnDeath);
         }
     }
 
@@ -104,7 +104,7 @@ public class WalkerClown : MonoBehaviour
             lastStopSoundTime = Time.time; // Update the last play time
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         // Reset the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -142,7 +142,7 @@ public class WalkerClown : MonoBehaviour
             spawnPosition.y += 1; // Increase Y position by 1 unit
 
             GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
-            StartCoroutine(DestroyAfterTime(deathImage, 2f));
+            Destroy(deathImage, 2f);
 
             // Rotate the image to face the player and adjust rotation on X axis
             Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
@@ -152,10 +152,14 @@ public class WalkerClown : MonoBehaviour
         }
     }
 
-    private IEnumerator DestroyAfterTime(GameObject obj, float delay)
+    private void OnDeath()
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(obj);
+        if (scoreBoard != null)
+        {
+            scoreBoard.AddScore(points);
+        }
+        SpawnDeathImage();
+        Destroy(gameObject);
     }
 }
 
