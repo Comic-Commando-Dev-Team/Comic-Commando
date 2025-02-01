@@ -153,6 +153,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7326deddf4e7416fb919bce43987e3d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2300488649823372807}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7326deddf4e7416fb919bce43987e3d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7984402823445308971}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7326deddf4e7416fb919bce43987e3d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7611019349441652505}
   m_SourcePrefab: {fileID: 100100000, guid: b7326deddf4e7416fb919bce43987e3d, type: 3}
 --- !u!4 &7442887834247536943 stripped
 Transform:
@@ -215,15 +221,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc1d345384b94657b0079261aa50ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  baseMovementSpeed: 5
   stoppingDistance: 15
-  orbitSpeed: 2
+  baseOrbitSpeed: 3
+  speedVariationRange: 0.5
   projectilePrefab: {fileID: 2767341905782943285, guid: 574dc0713c04cf740bdb00e8d3b6c170, type: 3}
   shootPoint: {fileID: 8058152115029321579}
   attackRate: 2
   projectileSpeed: 15
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
   points: 100
+  deathImageHeight: 1
+  deathImageDuration: 2
 --- !u!135 &5184646675071893832
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -342,3 +351,39 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7984402823445308971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782681545337666453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07f270ac36c49789466c75ceb88424c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableSpatialization: 1
+  gainBoostDb: 0
+  enableAcoustics: 1
+  reverbSendDb: 0
+--- !u!114 &7611019349441652505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782681545337666453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796f04c5a94947649c2235acef0008ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hrtfIntensity: 1
+  volumetricRadius: 0
+  earlyReflectionsSendDb: 0
+  reverbReach: 0.5
+  occlusionIntensity: 1
+  directivityIntensity: 1
+  directivityPattern: 0
+  directSoundEnabled: 1
