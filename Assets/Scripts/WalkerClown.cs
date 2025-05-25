@@ -6,99 +6,95 @@ using System.Collections;
 [RequireComponent(typeof(HealthController))]
 public class WalkerClown : MonoBehaviour
 {
-    [SerializeField] private float speed = 2.0f;
+    // Animation parameter names
+    private const string ANIM_RUN = "True_Clown_Run";
+    private const string ANIM_IDLE = "True_Clown_Idle";
+    private const string ANIM_CROUCH_WALK = "True_Clown_Crouch_Walk";
+    private const string ANIM_GRAB = "True_Clown_Grab";
+    private const string ANIM_STUNNED = "True_Clown_Stunned";
+    private const string ANIM_LAUGH = "True_Clown_Laugh";
+    private const string ANIM_DIE = "True_Clown_Die";
+    private const string ANIM_START = "StartAnim";
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 2.0f;
     [SerializeField] private float stoppingDistance = 2f;
-    [SerializeField] private int _damage = 10;
+
+    [Header("Combat")]
+    [SerializeField] private int damage = 10;
+    [SerializeField] private int scoreValue = 100;
+
+    [Header("References")]
     [SerializeField] private GameObject deathImagePrefab;
     [SerializeField] private AudioClip stopSound;
-    [SerializeField] private int points = 100;
-    [SerializeField] private string crouchWalkAnim = "True_Clown_Crouch_Walk";
-    [SerializeField] private string grabAnim = "True_Clown_Grab";
-    [SerializeField] private string stunnedAnim = "True_Clown_Stunned";
-    [SerializeField] private string laughAnim = "True_Clown_Laugh";
-    [SerializeField] private string dieAnim = "True_Clown_Die";
+
+    [Header("Animation Lengths (Fallback)")]
+    [SerializeField] private float grabAnimLengthFallback = 1.2f;
+    [SerializeField] private float dieAnimLengthFallback = 1.0f;
 
     private Animator animator;
     private HealthController healthController;
     private TargetTracker targetTracker;
     private AudioSource audioSource;
+    private ScoreBoard scoreBoard;
+
     private bool isStopped = false;
     private float lastStopSoundTime = -3f;
-    private ScoreBoard scoreBoard;
     private bool isStunned = false;
     private float stunnedTimer = 0f;
     private float stunnedDuration = 1.0f;
 
-    public void PlayIdle()
-    {
-        animator.SetBool("True_Clown_Idle", true);
-        animator.SetBool("True_Clown_Run", false);
-    }
-
-    public void PlayRun()
-    {
-        animator.SetBool("True_Clown_Run", true);
-        animator.SetBool("True_Clown_Idle", false);
-    }
-
-    public void PlayCrouchWalk()
-    {
-        animator.SetTrigger("True_Clown_Crouch_Walk");
-    }
-
-    public void PlayGrab()
-    {
-        animator.SetTrigger("True_Clown_Grab");
-    }
-
-    public void PlayStunned()
-    {
-        animator.SetTrigger("True_Clown_Stunned");
-    }
-
-    public void PlayLaugh()
-    {
-        animator.SetTrigger("True_Clown_Laugh");
-    }
-
-    public void PlayDie()
-    {
-        animator.SetTrigger("True_Clown_Die");
-    }
-
-    void Start()
+    private void Start()
     {
         animator = GetComponent<Animator>();
-        healthController = GetComponent<HealthController>();
-        targetTracker = GetComponent<TargetTracker>();
-        audioSource = GetComponent<AudioSource>();
-        scoreBoard = FindAnyObjectByType<ScoreBoard>();
-
-        int randomAnim = Random.value > 0.5f ? 1 : 2;
-        animator.SetInteger("StartAnim", randomAnim);
-
-
         if (animator == null)
         {
             Debug.LogError("Animator not found!");
+            enabled = false;
+            return;
         }
-        else
+        healthController = GetComponent<HealthController>();
+        if (healthController == null)
         {
-            // Check if parameters exist in the Animator
-            if (!animator.HasParameterOfType("True_Clown_Run", AnimatorControllerParameterType.Bool) ||
-                !animator.HasParameterOfType("True_Clown_Idle", AnimatorControllerParameterType.Bool))
-            {
-                Debug.LogError("Animator parameters 'True_Clown_Run' or 'True_Clown_Idle' not found!");
-            }
+            Debug.LogError("HealthController not found!");
+            enabled = false;
+            return;
+        }
+        targetTracker = GetComponent<TargetTracker>();
+        if (targetTracker == null)
+        {
+            Debug.LogError("TargetTracker not found!");
+            enabled = false;
+            return;
+        }
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource not found!");
+            enabled = false;
+            return;
+        }
+        scoreBoard = FindAnyObjectByType<ScoreBoard>();
+        if (scoreBoard == null)
+        {
+            Debug.LogWarning("ScoreBoard not found in scene.");
         }
 
-        if (healthController != null)
+        int randomAnim = Random.value > 0.5f ? 1 : 2;
+        animator.SetInteger(ANIM_START, randomAnim);
+
+        if (!animator.HasParameterOfType(ANIM_RUN, AnimatorControllerParameterType.Bool) ||
+            !animator.HasParameterOfType(ANIM_IDLE, AnimatorControllerParameterType.Bool))
         {
-            healthController.OnDeath.AddListener(OnDeath);
+            Debug.LogError($"Animator parameters '{ANIM_RUN}' or '{ANIM_IDLE}' not found!");
+            enabled = false;
+            return;
         }
+
+        healthController.OnDeath.AddListener(OnDeath);
     }
 
-    void Update()
+    private void Update()
     {
         if (healthController.IsDead) return;
         if (targetTracker.CurrentTarget == null) return;
@@ -114,62 +110,47 @@ public class WalkerClown : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
-
-        // Look at player with an additional 90 degrees rotation on Y axis
         Vector3 direction = (targetTracker.CurrentTarget.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        lookRotation *= Quaternion.Euler(0, 90, 0); // Add 90 degrees to the Y axis
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * speed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * moveSpeed);
 
         if (distance > stoppingDistance)
         {
-            // Move towards the player
-            transform.position += direction * speed * Time.deltaTime;
-
-            // Play running animation
-            if (!animator.GetBool("True_Clown_Run"))
+            transform.position += moveSpeed * Time.deltaTime * direction;
+            if (!animator.GetBool(ANIM_RUN))
             {
-                animator.SetBool("True_Clown_Run", true);
-                animator.SetBool("True_Clown_Idle", false);
+                animator.SetBool(ANIM_RUN, true);
+                animator.SetBool(ANIM_IDLE, false);
             }
-
-            isStopped = false; // Reset the stopped state
+            isStopped = false;
         }
         else
         {
-            // Stop and play idle animation
-            if (!animator.GetBool("True_Clown_Idle"))
+            if (!animator.GetBool(ANIM_IDLE))
             {
-                animator.SetBool("True_Clown_Run", false);
-                animator.SetBool("True_Clown_Idle", true);
+                animator.SetBool(ANIM_RUN, false);
+                animator.SetBool(ANIM_IDLE, true);
             }
-
             if (!isStopped)
             {
                 isStopped = true;
                 StartCoroutine(HandleStopActions());
             }
         }
-
     }
 
     private IEnumerator HandleStopActions()
     {
         PlayGrab();
-
-        float grabAnimLength = 1.2f; // <- wpisz faktyczną długość animacji Grab w sekundach
+        float grabAnimLength = GetAnimationClipLength(ANIM_GRAB, grabAnimLengthFallback);
         yield return new WaitForSeconds(grabAnimLength);
 
-        // Play stop sound with cooldown
         if (audioSource != null && stopSound != null && Time.time - lastStopSoundTime >= 3f)
         {
             audioSource.PlayOneShot(stopSound);
-            lastStopSoundTime = Time.time; // Update the last play time
+            lastStopSoundTime = Time.time;
         }
-
         yield return new WaitForSeconds(4f);
-
-        // Reset the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -178,15 +159,11 @@ public class WalkerClown : MonoBehaviour
         if (deathImagePrefab != null && targetTracker.CurrentTarget != null)
         {
             Vector3 spawnPosition = transform.position;
-            spawnPosition.y += 1; // Increase Y position by 1 unit
-
+            spawnPosition.y += 1;
             GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
             Destroy(deathImage, 2f);
-
-            // Rotate the image to face the player and adjust rotation on X axis
             Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            lookRotation *= Quaternion.Euler(0, 90, 0); // Rotate 90 degrees on Y axis
             deathImage.transform.rotation = lookRotation;
         }
     }
@@ -195,7 +172,7 @@ public class WalkerClown : MonoBehaviour
     {
         if (scoreBoard != null)
         {
-            scoreBoard.AddScore(points);
+            scoreBoard.AddScore(scoreValue);
         }
         SpawnDeathImage();
         StartCoroutine(DeathSequence());
@@ -204,28 +181,46 @@ public class WalkerClown : MonoBehaviour
     private IEnumerator DeathSequence()
     {
         if (audioSource != null)
-        audioSource.enabled = false;
-        
-        float previousSpeed = speed;
-        speed = 0f; // Zatrzymaj klauna podczas animacji śmierci
-
-
+            audioSource.enabled = false;
+        moveSpeed = 0f;
         PlayDie();
-
-        // Poczekaj na długość animacji
-        float dieAnimLength = 1.0f; // <- wpisz tu długość animacji True_Clown_Die w sekundach
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        
+        float dieAnimLength = GetAnimationClipLength(ANIM_DIE, dieAnimLengthFallback);
         yield return new WaitForSeconds(dieAnimLength + 1f);
-
         Destroy(gameObject);
     }
-    
+
     public void Stun()
     {
         isStunned = true;
         stunnedTimer = stunnedDuration;
         PlayStunned();
+    }
+
+    // Animation helpers
+    public void PlayIdle() => SetAnimBools(ANIM_IDLE, ANIM_RUN);
+    public void PlayRun() => SetAnimBools(ANIM_RUN, ANIM_IDLE);
+    public void PlayCrouchWalk() => animator.SetTrigger(ANIM_CROUCH_WALK);
+    public void PlayGrab() => animator.SetTrigger(ANIM_GRAB);
+    public void PlayStunned() => animator.SetTrigger(ANIM_STUNNED);
+    public void PlayLaugh() => animator.SetTrigger(ANIM_LAUGH);
+    public void PlayDie() => animator.SetTrigger(ANIM_DIE);
+
+    private void SetAnimBools(string trueParam, string falseParam)
+    {
+        animator.SetBool(trueParam, true);
+        animator.SetBool(falseParam, false);
+    }
+
+    private float GetAnimationClipLength(string clipName, float fallback)
+    {
+        if (animator == null || animator.runtimeAnimatorController == null)
+            return fallback;
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+                return clip.length;
+        }
+        return fallback;
     }
 }
 
