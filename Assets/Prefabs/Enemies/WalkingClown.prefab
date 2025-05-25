@@ -152,13 +152,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7686609253948970760}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0.050104965, y: 0.15548125, z: -0.0007999213}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7686609253949000462}
-  m_Father: {fileID: 7686609253949000548}
+  m_Father: {fileID: 7686609253949000492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7686609253948970762
 GameObject:
@@ -205,8 +205,9 @@ GameObject:
   - component: {fileID: 7686609253949000492}
   - component: {fileID: 7686609253935307272}
   - component: {fileID: 1703340983281773190}
+  - component: {fileID: 1421745288373967729}
   m_Layer: 0
-  m_Name: clown
+  m_Name: Clown Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,13 +221,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7686609253948970764}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0.0000000077486035, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7686609253949000488}
   m_Father: {fileID: 7686609253949000548}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!137 &7686609253935307272
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -333,6 +335,28 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 193ba34cb62b78d47ad34b482512962f, type: 3}
   - {fileID: 2800000, guid: 38fd77f83bd0d194886df70cba6d77c0, type: 3}
   - {fileID: 2800000, guid: d78be664ea7573d42b2e17fcc8c1f5f9, type: 3}
+--- !u!95 &1421745288373967729
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7686609253948970764}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 77a32863e7db71143ace465657f12120, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6de03f8b655ef204d986c2b053b05d79, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7686609253948970766
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +717,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7686609253949000548}
-  - component: {fileID: 7686609253939455176}
   - component: {fileID: 4936148983172921807}
   - component: {fileID: 6682371196176230733}
   - component: {fileID: 1303649417682451469}
@@ -702,7 +725,7 @@ GameObject:
   - component: {fileID: 4955169556758261488}
   - component: {fileID: 1834322571073599032}
   - component: {fileID: 3396762335812483427}
-  - component: {fileID: -3709473193831516532}
+  - component: {fileID: 896492696567131841}
   m_Layer: 0
   m_Name: WalkingClown
   m_TagString: EnemyWalker
@@ -718,37 +741,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7686609253948970820}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3.0009909, y: 0.02251172, z: -2.94}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7686609253949000488}
   - {fileID: 7686609253949000492}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!95 &7686609253939455176
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7686609253948970820}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 77a32863e7db71143ace465657f12120, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6de03f8b655ef204d986c2b053b05d79, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4936148983172921807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,17 +800,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0b6365fab26984bb74e39ad07a8878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  moveSpeed: 2
   stoppingDistance: 1.5
-  _damage: 50
+  damage: 20
+  scoreValue: 100
+  attackRadius: 2.5
+  attackInterval: 2
+  stunDuration: 1
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
-  stopSound: {fileID: 8300000, guid: a539dba64aa5cb6469caea79403da1f9, type: 3}
-  points: 100
-  crouchWalkAnim: True_Clown_Crouch_Walk
-  grabAnim: True_Clown_Grab
-  stunnedAnim: True_Clown_Stunned
-  laughAnim: True_Clown_Laugh
-  dieAnim: True_Clown_Die
+  attackSound: {fileID: 8300000, guid: 7e8c87a6e9d9f436b9354fb83306aa6e, type: 3}
+  laughSound: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
+  attackAnimLengthFallback: 1.2
+  dieAnimLengthFallback: 1
 --- !u!136 &1031800060338518838
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -844,10 +845,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
-  m_Resource: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_audioClip: {fileID: 8300000, guid: 73fcee486757348d5bfc8e08b7dc1a24, type: 3}
+  m_Resource: {fileID: 8300000, guid: 73fcee486757348d5bfc8e08b7dc1a24, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1064,33 +1065,29 @@ MonoBehaviour:
   directivityIntensity: 1
   directivityPattern: 0
   directSoundEnabled: 1
---- !u!54 &-3709473193831516532
-Rigidbody:
+  mediumAbsorption: 1
+--- !u!195 &896492696567131841
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7686609253948970820}
-  serializedVersion: 4
-  m_Mass: 1000
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 180
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &7686609253948970822
 GameObject:
   m_ObjectHideFlags: 0

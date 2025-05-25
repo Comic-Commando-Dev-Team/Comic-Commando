@@ -15,7 +15,7 @@ public class HealthController : MonoBehaviour
     private int _currentHealth;
 
     public int CurrentHealth => _currentHealth;
-    public bool IsDead => _currentHealth == 0;
+    public bool IsDead => _currentHealth <= 0;
     public UnityEvent<int> OnHealthChanged => onHealthChanged;
     public UnityEvent OnHeal => onHeal;
     public UnityEvent OnDamage => onDamage;
@@ -49,7 +49,9 @@ public class HealthController : MonoBehaviour
 
     public void Damage(int amount)
     {
-        GetComponent<WalkerClown>()?.Stun();
+        // Prevent firing multiple death events
+        if (IsDead) return;
+
         _currentHealth = Mathf.Max(_currentHealth - amount, 0);
         onHealthChanged.Invoke(_currentHealth);
         onDamage.Invoke();
