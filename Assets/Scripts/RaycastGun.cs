@@ -5,7 +5,6 @@ using UnityEngine.XR;
 public class ReycastGun : MonoBehaviour
 {
     [SerializeField] private InputActionProperty _shootAction;
-    [SerializeField] private XRNode _controllerNode = XRNode.LeftHand;
     [SerializeField] private Transform _barrelLocation;
     [SerializeField] private LineRenderer _ReyCastPrefab;
     [SerializeField] private AudioClip _ReyCastSound;

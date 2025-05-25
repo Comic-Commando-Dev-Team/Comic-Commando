@@ -11,16 +11,17 @@ public class WaterGun : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private InputActionProperty _shootAction;
-    [SerializeField] private XRNode _controllerNode = XRNode.LeftHand;
 
     [Header("Projectile")]
+    [SerializeField] private int _damage = 10;
     [SerializeField] private VisualEffect _waterVisualEffect;
     [SerializeField] public Transform _barrelLocation;
-    RaycastHit hit;
 
-    private float fireRate = 1f / 3f; // 3 razy na sekundę
+
+    private RaycastHit hit;
+
+    private float fireRate = 1f / 3f;
     private float nextFireTime = 0f;
-    private int hitCount = 0;
 
     private void OnEnable()
     {
@@ -38,7 +39,7 @@ public class WaterGun : MonoBehaviour
         {
             Shoot();
         }
-        
+
         if (_shootAction.action?.ReadValue<float>() > 0)
         {
             if (Time.time >= nextFireTime)
@@ -47,19 +48,12 @@ public class WaterGun : MonoBehaviour
 
                 if (Physics.Raycast(_barrelLocation.position, transform.TransformDirection(Vector3.forward), out hit, 4))
                 {
-                    Debug.DrawRay(_barrelLocation.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
+                    Debug.DrawRay(_barrelLocation.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
                     Debug.Log("Did Hit");
 
-                    KillColownHead killColownHead = hit.collider.GetComponent<KillColownHead>();
-
-                    if (killColownHead != null)
+                    if (hit.collider.TryGetComponent(out HealthController healthController))
                     {
-                        hitCount++;
-                        if (hitCount >= 3)
-                        {
-                            killColownHead.HandleDestruction();
-                            hitCount = 0; // Reset the hit count after destruction
-                        }
+                        healthController.Damage(_damage);
                     }
                 }
             }
