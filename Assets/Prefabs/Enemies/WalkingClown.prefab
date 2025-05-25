@@ -802,12 +802,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   stoppingDistance: 1.5
-  damage: 10
+  damage: 20
   scoreValue: 100
   attackRadius: 2.5
   attackInterval: 2
+  stunDuration: 1
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
   attackSound: {fileID: 8300000, guid: 7e8c87a6e9d9f436b9354fb83306aa6e, type: 3}
+  laughSound: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
   attackAnimLengthFallback: 1.2
   dieAnimLengthFallback: 1
 --- !u!136 &1031800060338518838
@@ -843,10 +845,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
-  m_Resource: {fileID: 8300000, guid: c03dd0a57027d554985fbcf4ac2d2aad, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_audioClip: {fileID: 8300000, guid: 73fcee486757348d5bfc8e08b7dc1a24, type: 3}
+  m_Resource: {fileID: 8300000, guid: 73fcee486757348d5bfc8e08b7dc1a24, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0

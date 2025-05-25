@@ -6,6 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(TargetTracker))]
 [RequireComponent(typeof(HealthController))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AudioSource))]
 public class WalkerClown : MonoBehaviour
 {
     // Animation parameter names
@@ -27,10 +28,12 @@ public class WalkerClown : MonoBehaviour
     [SerializeField] private int scoreValue = 100;
     [SerializeField] private float attackRadius = 2.5f;
     [SerializeField] private float attackInterval = 2.0f;
+    [SerializeField] private float stunDuration = 1.0f;
 
     [Header("References")]
     [SerializeField] private GameObject deathImagePrefab;
     [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip laughSound;
 
     [Header("Animation Lengths (Fallback)")]
     [SerializeField] private float attackAnimLengthFallback = 1.2f;
@@ -44,11 +47,11 @@ public class WalkerClown : MonoBehaviour
     private NavMeshAgent agent;
 
     private float lastAttackSoundTime = -3f;
-    private bool isStunned = false;
     private float stunnedTimer = 0f;
-    private float stunnedDuration = 1.0f;
     private float lastAttackTimestamp = -Mathf.Infinity;
-    private bool isAttackInProgress = false;
+
+    private enum ClownState { Idle, Run, Attack, Stunned, Die }
+    private ClownState currentState = ClownState.Idle;
 
     private void Start()
     {
@@ -109,6 +112,8 @@ public class WalkerClown : MonoBehaviour
         }
 
         healthController.OnDeath.AddListener(OnDeath);
+        healthController.OnDamage.AddListener(OnDamage);
+        ChangeState(ClownState.Idle);
     }
 
     private void Update()
@@ -116,52 +121,88 @@ public class WalkerClown : MonoBehaviour
         if (healthController.IsDead) return;
         if (targetTracker.CurrentTarget == null) return;
 
-        if (isStunned)
+        switch (currentState)
         {
-            stunnedTimer -= Time.deltaTime;
-            if (stunnedTimer <= 0f)
-            {
-                isStunned = false;
-                agent.isStopped = false;
-            }
-            else
-            {
-                agent.isStopped = true;
-            }
-            return;
-        }
-
-        agent.isStopped = false;
-        agent.speed = moveSpeed;
-        agent.stoppingDistance = stoppingDistance;
-        agent.SetDestination(targetTracker.CurrentTarget.transform.position);
-
-        float distanceToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
-
-        if (distanceToTarget <= attackRadius && !isAttackInProgress && Time.time - lastAttackTimestamp >= attackInterval)
-        {
-            isAttackInProgress = true;
-            agent.isStopped = true;
-            StartCoroutine(AttackCoroutine());
-        }
-        else if (agent.remainingDistance > agent.stoppingDistance)
-        {
-            if (agent.velocity.magnitude > 0.1f)
-            {
-                if (!animator.GetBool(ANIM_RUN))
+            case ClownState.Stunned:
+                stunnedTimer -= Time.deltaTime;
+                if (stunnedTimer <= 0f)
                 {
-                    animator.SetBool(ANIM_RUN, true);
-                    animator.SetBool(ANIM_IDLE, false);
+                    ChangeState(ClownState.Idle);
                 }
-            }
+                break;
+            case ClownState.Attack:
+                // Attack logic handled by coroutine, wait for coroutine to finish
+                break;
+            case ClownState.Run:
+                agent.SetDestination(targetTracker.CurrentTarget.transform.position);
+                float distanceToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
+                if (distanceToTarget <= attackRadius && Time.time - lastAttackTimestamp >= attackInterval)
+                {
+                    ChangeState(ClownState.Attack);
+                }
+                else if (agent.remainingDistance > agent.stoppingDistance)
+                {
+                    if (agent.velocity.magnitude > 0.1f)
+                    {
+                        if (!animator.GetBool(ANIM_RUN))
+                        {
+                            PlayRun();
+                        }
+                    }
+                }
+                else
+                {
+                    ChangeState(ClownState.Idle);
+                }
+                break;
+            case ClownState.Idle:
+                if (!animator.GetBool(ANIM_IDLE))
+                {
+                    PlayIdle();
+                }
+                float distToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
+                if (distToTarget > attackRadius)
+                {
+                    ChangeState(ClownState.Run);
+                }
+                else if (distToTarget <= attackRadius && Time.time - lastAttackTimestamp >= attackInterval)
+                {
+                    ChangeState(ClownState.Attack);
+                }
+                break;
+            case ClownState.Die:
+                // Death handled by coroutine
+                break;
         }
-        else
+    }
+
+    private void ChangeState(ClownState newState)
+    {
+        if (currentState == newState) return;
+        currentState = newState;
+        switch (newState)
         {
-            if (!animator.GetBool(ANIM_IDLE))
-            {
-                animator.SetBool(ANIM_RUN, false);
-                animator.SetBool(ANIM_IDLE, true);
-            }
+            case ClownState.Idle:
+                agent.isStopped = true;
+                PlayIdle();
+                break;
+            case ClownState.Run:
+                agent.isStopped = false;
+                PlayRun();
+                break;
+            case ClownState.Attack:
+                agent.isStopped = true;
+                StartCoroutine(AttackCoroutine());
+                break;
+            case ClownState.Stunned:
+                agent.isStopped = true;
+                PlayStunned();
+                stunnedTimer = stunDuration;
+                break;
+            case ClownState.Die:
+                agent.isStopped = true;
+                PlayDie();
+                break;
         }
     }
 
@@ -169,11 +210,8 @@ public class WalkerClown : MonoBehaviour
     {
         PlayGrab();
         float attackAnimLength = GetAnimationClipLength(ANIM_GRAB, attackAnimLengthFallback);
-        // Wait for the moment the attack should hit (e.g., halfway through the animation)
         float attackHitMoment = attackAnimLength * 0.5f;
         yield return new WaitForSeconds(attackHitMoment);
-
-        // Check if target is still in range
         if (targetTracker.CurrentTarget != null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
@@ -182,7 +220,7 @@ public class WalkerClown : MonoBehaviour
                 if (targetTracker.CurrentTarget.TryGetComponent<HealthController>(out var targetHealth))
                 {
                     targetHealth.Damage(damage);
-                    if (audioSource != null && attackSound != null && Time.time - lastAttackSoundTime >= 3f)
+                    if (attackSound != null && Time.time - lastAttackSoundTime >= attackSound.length)
                     {
                         audioSource.PlayOneShot(attackSound);
                         lastAttackSoundTime = Time.time;
@@ -190,12 +228,12 @@ public class WalkerClown : MonoBehaviour
                 }
             }
         }
-
-        // Wait for the rest of the animation
         yield return new WaitForSeconds(attackAnimLength - attackHitMoment);
         lastAttackTimestamp = Time.time;
-        isAttackInProgress = false;
-        agent.isStopped = false;
+        PlayLaugh();
+        audioSource.PlayOneShot(laughSound);
+        yield return new WaitForSeconds(laughSound.length);
+        ChangeState(ClownState.Idle);
     }
 
     private void SpawnDeathImage()
@@ -212,6 +250,11 @@ public class WalkerClown : MonoBehaviour
         }
     }
 
+    private void OnDamage()
+    {
+        ChangeState(ClownState.Stunned);
+    }
+
     private void OnDeath()
     {
         if (scoreBoard != null)
@@ -224,29 +267,16 @@ public class WalkerClown : MonoBehaviour
             agent.enabled = false;
         }
         SpawnDeathImage();
+        ChangeState(ClownState.Die);
         StartCoroutine(DeathSequence());
     }
 
     private IEnumerator DeathSequence()
     {
-        if (audioSource != null)
-            audioSource.enabled = false;
-        moveSpeed = 0f;
-        PlayDie();
+        audioSource.Stop();
         float dieAnimLength = GetAnimationClipLength(ANIM_DIE, dieAnimLengthFallback);
         yield return new WaitForSeconds(dieAnimLength + 1f);
         Destroy(gameObject);
-    }
-
-    public void Stun()
-    {
-        isStunned = true;
-        stunnedTimer = stunnedDuration;
-        PlayStunned();
-        if (agent != null)
-        {
-            agent.isStopped = true;
-        }
     }
 
     // Animation helpers
