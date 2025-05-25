@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 5425012354860968640}
   - component: {fileID: 5100745839537348471}
   - component: {fileID: 7529428273410527546}
-  m_Layer: 0
+  - component: {fileID: 1761777586823139517}
+  - component: {fileID: 6750226194619357069}
+  m_Layer: 3
   m_Name: ScoreTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,8 +113,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280541918
+  m_fontColor: {r: 0.87161314, g: 0.8867924, b: 0.13803846, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -176,6 +178,47 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5100745839537348471}
   m_maskType: 0
+--- !u!114 &1761777586823139517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6264264956791240328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee10491ef6d5d1d49a270cf6b09bdc19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enableMipmapping: 1
+  _dynamicResolution: 0
+  _redrawResolutionThreshold: 2147483647
+  rectTransform: {fileID: 5425012354860968640}
+  maxTextureSize: 2048
+  manualRedraw: 1
+  renderInterval: 1
+  renderIntervalFrameOffset: 0
+  expensive: 0
+  layer: 5
+  opacity: 1
+  shape: 0
+  curveRadius: 1
+  overlapMask: 0
+  overlayType: 2
+  _overlayEnabled: 1
+--- !u!114 &6750226194619357069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6264264956791240328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3459a626238148a4143ca5cd9706f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetCanvas: {fileID: 1761777586823139517}
 --- !u!1 &7586058823503313881
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +230,6 @@ GameObject:
   - component: {fileID: 317883443641883358}
   - component: {fileID: 1951306243843334456}
   - component: {fileID: 8513277013773897254}
-  - component: {fileID: 46256969527883322}
   - component: {fileID: 2486024669574644939}
   m_Layer: 0
   m_Name: ScoreBord
@@ -204,7 +246,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7586058823503313881}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.014223772, y: 0.90953296, z: 0.07984593, w: -0.40764204}
+  m_LocalRotation: {x: 0.014225608, y: 0.9095341, z: 0.07984879, w: -0.40763897}
   m_LocalPosition: {x: -16.13, y: 14.12, z: -13.63}
   m_LocalScale: {x: 30, y: 20, z: 0.2}
   m_ConstrainProportionsScale: 0
@@ -265,27 +307,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &46256969527883322
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7586058823503313881}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2486024669574644939
 MonoBehaviour:
   m_ObjectHideFlags: 0
