@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(TargetTracker))]
 [RequireComponent(typeof(HealthController))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class WalkerClown : MonoBehaviour
 {
     // Animation parameter names
@@ -23,13 +25,15 @@ public class WalkerClown : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private int damage = 10;
     [SerializeField] private int scoreValue = 100;
+    [SerializeField] private float attackRadius = 2.5f;
+    [SerializeField] private float attackInterval = 2.0f;
 
     [Header("References")]
     [SerializeField] private GameObject deathImagePrefab;
-    [SerializeField] private AudioClip stopSound;
+    [SerializeField] private AudioClip attackSound;
 
     [Header("Animation Lengths (Fallback)")]
-    [SerializeField] private float grabAnimLengthFallback = 1.2f;
+    [SerializeField] private float attackAnimLengthFallback = 1.2f;
     [SerializeField] private float dieAnimLengthFallback = 1.0f;
 
     private Animator animator;
@@ -37,16 +41,18 @@ public class WalkerClown : MonoBehaviour
     private TargetTracker targetTracker;
     private AudioSource audioSource;
     private ScoreBoard scoreBoard;
+    private NavMeshAgent agent;
 
-    private bool isStopped = false;
-    private float lastStopSoundTime = -3f;
+    private float lastAttackSoundTime = -3f;
     private bool isStunned = false;
     private float stunnedTimer = 0f;
     private float stunnedDuration = 1.0f;
+    private float lastAttackTimestamp = -Mathf.Infinity;
+    private bool isAttackInProgress = false;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         if (animator == null)
         {
             Debug.LogError("Animator not found!");
@@ -79,6 +85,17 @@ public class WalkerClown : MonoBehaviour
         {
             Debug.LogWarning("ScoreBoard not found in scene.");
         }
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent not found!");
+            enabled = false;
+            return;
+        }
+        agent.speed = moveSpeed;
+        agent.stoppingDistance = stoppingDistance;
+        agent.updateRotation = true;
+        agent.updatePosition = true;
 
         int randomAnim = Random.value > 0.5f ? 1 : 2;
         animator.SetInteger(ANIM_START, randomAnim);
@@ -105,24 +122,38 @@ public class WalkerClown : MonoBehaviour
             if (stunnedTimer <= 0f)
             {
                 isStunned = false;
+                agent.isStopped = false;
+            }
+            else
+            {
+                agent.isStopped = true;
             }
             return;
         }
 
-        float distance = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
-        Vector3 direction = (targetTracker.CurrentTarget.transform.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * moveSpeed);
+        agent.isStopped = false;
+        agent.speed = moveSpeed;
+        agent.stoppingDistance = stoppingDistance;
+        agent.SetDestination(targetTracker.CurrentTarget.transform.position);
 
-        if (distance > stoppingDistance)
+        float distanceToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
+
+        if (distanceToTarget <= attackRadius && !isAttackInProgress && Time.time - lastAttackTimestamp >= attackInterval)
         {
-            transform.position += moveSpeed * Time.deltaTime * direction;
-            if (!animator.GetBool(ANIM_RUN))
+            isAttackInProgress = true;
+            agent.isStopped = true;
+            StartCoroutine(AttackCoroutine());
+        }
+        else if (agent.remainingDistance > agent.stoppingDistance)
+        {
+            if (agent.velocity.magnitude > 0.1f)
             {
-                animator.SetBool(ANIM_RUN, true);
-                animator.SetBool(ANIM_IDLE, false);
+                if (!animator.GetBool(ANIM_RUN))
+                {
+                    animator.SetBool(ANIM_RUN, true);
+                    animator.SetBool(ANIM_IDLE, false);
+                }
             }
-            isStopped = false;
         }
         else
         {
@@ -131,27 +162,40 @@ public class WalkerClown : MonoBehaviour
                 animator.SetBool(ANIM_RUN, false);
                 animator.SetBool(ANIM_IDLE, true);
             }
-            if (!isStopped)
-            {
-                isStopped = true;
-                StartCoroutine(HandleStopActions());
-            }
         }
     }
 
-    private IEnumerator HandleStopActions()
+    private IEnumerator AttackCoroutine()
     {
         PlayGrab();
-        float grabAnimLength = GetAnimationClipLength(ANIM_GRAB, grabAnimLengthFallback);
-        yield return new WaitForSeconds(grabAnimLength);
+        float attackAnimLength = GetAnimationClipLength(ANIM_GRAB, attackAnimLengthFallback);
+        // Wait for the moment the attack should hit (e.g., halfway through the animation)
+        float attackHitMoment = attackAnimLength * 0.5f;
+        yield return new WaitForSeconds(attackHitMoment);
 
-        if (audioSource != null && stopSound != null && Time.time - lastStopSoundTime >= 3f)
+        // Check if target is still in range
+        if (targetTracker.CurrentTarget != null)
         {
-            audioSource.PlayOneShot(stopSound);
-            lastStopSoundTime = Time.time;
+            float distanceToTarget = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
+            if (distanceToTarget <= attackRadius)
+            {
+                if (targetTracker.CurrentTarget.TryGetComponent<HealthController>(out var targetHealth))
+                {
+                    targetHealth.Damage(damage);
+                    if (audioSource != null && attackSound != null && Time.time - lastAttackSoundTime >= 3f)
+                    {
+                        audioSource.PlayOneShot(attackSound);
+                        lastAttackSoundTime = Time.time;
+                    }
+                }
+            }
         }
-        yield return new WaitForSeconds(4f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        // Wait for the rest of the animation
+        yield return new WaitForSeconds(attackAnimLength - attackHitMoment);
+        lastAttackTimestamp = Time.time;
+        isAttackInProgress = false;
+        agent.isStopped = false;
     }
 
     private void SpawnDeathImage()
@@ -174,6 +218,11 @@ public class WalkerClown : MonoBehaviour
         {
             scoreBoard.AddScore(scoreValue);
         }
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.enabled = false;
+        }
         SpawnDeathImage();
         StartCoroutine(DeathSequence());
     }
@@ -194,6 +243,10 @@ public class WalkerClown : MonoBehaviour
         isStunned = true;
         stunnedTimer = stunnedDuration;
         PlayStunned();
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
     }
 
     // Animation helpers
