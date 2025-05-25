@@ -12,6 +12,11 @@ public class WalkerClown : MonoBehaviour
     [SerializeField] private GameObject deathImagePrefab;
     [SerializeField] private AudioClip stopSound;
     [SerializeField] private int points = 100;
+    [SerializeField] private string crouchWalkAnim = "True_Clown_Crouch_Walk";
+    [SerializeField] private string grabAnim = "True_Clown_Grab";
+    [SerializeField] private string stunnedAnim = "True_Clown_Stunned";
+    [SerializeField] private string laughAnim = "True_Clown_Laugh";
+    [SerializeField] private string dieAnim = "True_Clown_Die";
 
     private Animator animator;
     private HealthController healthController;
@@ -20,6 +25,46 @@ public class WalkerClown : MonoBehaviour
     private bool isStopped = false;
     private float lastStopSoundTime = -3f;
     private ScoreBoard scoreBoard;
+    private bool isStunned = false;
+    private float stunnedTimer = 0f;
+    private float stunnedDuration = 1.0f;
+
+    public void PlayIdle()
+    {
+        animator.SetBool("True_Clown_Idle", true);
+        animator.SetBool("True_Clown_Run", false);
+    }
+
+    public void PlayRun()
+    {
+        animator.SetBool("True_Clown_Run", true);
+        animator.SetBool("True_Clown_Idle", false);
+    }
+
+    public void PlayCrouchWalk()
+    {
+        animator.SetTrigger("True_Clown_Crouch_Walk");
+    }
+
+    public void PlayGrab()
+    {
+        animator.SetTrigger("True_Clown_Grab");
+    }
+
+    public void PlayStunned()
+    {
+        animator.SetTrigger("True_Clown_Stunned");
+    }
+
+    public void PlayLaugh()
+    {
+        animator.SetTrigger("True_Clown_Laugh");
+    }
+
+    public void PlayDie()
+    {
+        animator.SetTrigger("True_Clown_Die");
+    }
 
     void Start()
     {
@@ -28,6 +73,10 @@ public class WalkerClown : MonoBehaviour
         targetTracker = GetComponent<TargetTracker>();
         audioSource = GetComponent<AudioSource>();
         scoreBoard = FindAnyObjectByType<ScoreBoard>();
+
+        int randomAnim = Random.value > 0.5f ? 1 : 2;
+        animator.SetInteger("StartAnim", randomAnim);
+
 
         if (animator == null)
         {
@@ -53,6 +102,16 @@ public class WalkerClown : MonoBehaviour
     {
         if (healthController.IsDead) return;
         if (targetTracker.CurrentTarget == null) return;
+
+        if (isStunned)
+        {
+            stunnedTimer -= Time.deltaTime;
+            if (stunnedTimer <= 0f)
+            {
+                isStunned = false;
+            }
+            return;
+        }
 
         float distance = Vector3.Distance(transform.position, targetTracker.CurrentTarget.transform.position);
 
@@ -91,11 +150,15 @@ public class WalkerClown : MonoBehaviour
                 StartCoroutine(HandleStopActions());
             }
         }
+
     }
 
     private IEnumerator HandleStopActions()
     {
-        yield return new WaitForSeconds(2f);
+        PlayGrab();
+
+        float grabAnimLength = 1.2f; // <- wpisz faktyczną długość animacji Grab w sekundach
+        yield return new WaitForSeconds(grabAnimLength);
 
         // Play stop sound with cooldown
         if (audioSource != null && stopSound != null && Time.time - lastStopSoundTime >= 3f)
@@ -104,7 +167,7 @@ public class WalkerClown : MonoBehaviour
             lastStopSoundTime = Time.time; // Update the last play time
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
 
         // Reset the scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -135,7 +198,34 @@ public class WalkerClown : MonoBehaviour
             scoreBoard.AddScore(points);
         }
         SpawnDeathImage();
+        StartCoroutine(DeathSequence());
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        if (audioSource != null)
+        audioSource.enabled = false;
+        
+        float previousSpeed = speed;
+        speed = 0f; // Zatrzymaj klauna podczas animacji śmierci
+
+
+        PlayDie();
+
+        // Poczekaj na długość animacji
+        float dieAnimLength = 1.0f; // <- wpisz tu długość animacji True_Clown_Die w sekundach
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        
+        yield return new WaitForSeconds(dieAnimLength + 1f);
+
         Destroy(gameObject);
+    }
+    
+    public void Stun()
+    {
+        isStunned = true;
+        stunnedTimer = stunnedDuration;
+        PlayStunned();
     }
 }
 

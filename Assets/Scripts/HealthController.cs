@@ -49,6 +49,7 @@ public class HealthController : MonoBehaviour
 
     public void Damage(int amount)
     {
+        GetComponent<WalkerClown>()?.Stun();
         _currentHealth = Mathf.Max(_currentHealth - amount, 0);
         onHealthChanged.Invoke(_currentHealth);
         onDamage.Invoke();

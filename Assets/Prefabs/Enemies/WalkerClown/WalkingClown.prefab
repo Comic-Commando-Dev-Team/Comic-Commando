@@ -806,6 +806,11 @@ MonoBehaviour:
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
   stopSound: {fileID: 8300000, guid: a539dba64aa5cb6469caea79403da1f9, type: 3}
   points: 100
+  crouchWalkAnim: True_Clown_Crouch_Walk
+  grabAnim: True_Clown_Grab
+  stunnedAnim: True_Clown_Stunned
+  laughAnim: True_Clown_Laugh
+  dieAnim: True_Clown_Die
 --- !u!136 &1031800060338518838
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1067,7 +1072,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7686609253948970820}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 1000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
