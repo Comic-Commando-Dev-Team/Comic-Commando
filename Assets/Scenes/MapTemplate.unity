@@ -414,7 +414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4170992074656974196, guid: 8992665b1fd314416b1a69bd9cb6a199, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4170992074656974196, guid: 8992665b1fd314416b1a69bd9cb6a199, type: 3}
       propertyPath: m_LocalPosition.z
@@ -584,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: spawnIntervalRandomness
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -706,10 +706,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1705770370}
     m_Modifications:
-    - target: {fileID: 3204343314826913393, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_AdditionalLightsShadowResolutionTier
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3380309138426408447, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28.860184
@@ -750,49 +746,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_Range
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_Intensity
-      value: 3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_Lightmapping
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_BounceIntensity
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8368449082865925186, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
       propertyPath: m_Name
       value: Bonfire
       objectReference: {fileID: 0}
-    - target: {fileID: 8615383734833844061, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8615383734833844061, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.177
-      objectReference: {fileID: 0}
-    - target: {fileID: 8615383734833844061, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8615383734833844061, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8615383734833844061, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1408014647374525251, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
-    - {fileID: 8892822210923756136, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
