@@ -46,7 +46,6 @@ public class WalkerClown : MonoBehaviour
     private ScoreBoard scoreBoard;
     private NavMeshAgent agent;
 
-    private float lastAttackSoundTime = -3f;
     private float stunnedTimer = 0f;
     private float lastAttackTimestamp = -Mathf.Infinity;
 
@@ -220,10 +219,9 @@ public class WalkerClown : MonoBehaviour
                 if (targetTracker.CurrentTarget.TryGetComponent<HealthController>(out var targetHealth))
                 {
                     targetHealth.Damage(damage);
-                    if (attackSound != null && Time.time - lastAttackSoundTime >= attackSound.length)
+                    if (attackSound != null)
                     {
                         audioSource.PlayOneShot(attackSound);
-                        lastAttackSoundTime = Time.time;
                     }
                 }
             }
