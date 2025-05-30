@@ -46,7 +46,7 @@ public class ExtractTreeCollidersFromTerrain : MonoBehaviour
                 if (terrain.preserveTreePrototypeLayers) obj.layer = tree.prefab.layer;
                 else obj.layer = terrain.gameObject.layer;
                 obj.transform.localScale = primitive_scale;
-                obj.transform.position = instances[j].position;
+                obj.transform.position = instances[j].position + (Vector3.up * (primitive_scale.y / 2f));
                 obj.transform.parent = terrain.transform;
                 obj.isStatic = true;
             }
