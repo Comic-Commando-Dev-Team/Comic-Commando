@@ -104,6 +104,7 @@ Material:
     - _Use_Dissole: 1
     - _Use_Dissolve_Tex: 0
     - _Use_Gradient_Mask: 0
+    - _XRMotionVectorsPass: 1
     m_Colors:
     - _Dissolve_Scroll: {r: 0, g: 0, b: 0, a: 0}
     - _Dissolve_Tiling: {r: 1, g: 1, b: 0, a: 0}

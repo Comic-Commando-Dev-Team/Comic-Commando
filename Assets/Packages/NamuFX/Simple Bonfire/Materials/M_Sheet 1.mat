@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Sheet 2
-  m_Shader: {fileID: -6465566751694194690, guid: 83a70b4f0e2b1304388abf82a3d4d336, type: 3}
+  m_Name: M_Sheet 1
+  m_Shader: {fileID: -6465566751694194690, guid: ffa05d119916ad44782487ca457e0015, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -106,6 +106,7 @@ Material:
     - _Use_Dissole: 1
     - _Use_Dissolve_Tex: 0
     - _Use_Gradient_Mask: 0
+    - _XRMotionVectorsPass: 1
     m_Colors:
     - _Dissolve_Scroll: {r: 0, g: 0, b: 0, a: 0}
     - _Dissolve_Tiling: {r: 1, g: 1, b: 0, a: 0}

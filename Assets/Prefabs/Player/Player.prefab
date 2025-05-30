@@ -52,7 +52,7 @@ MonoBehaviour:
   _maxDistanceToTorso: 0.5
   _maxVerticalOffset: 0.3
   _switchCooldown: 0.5
-  _dwellTime: 0.1
+  _dwellTime: 0.2
   _showDebugGizmos: 0
   _logSwitchEvents: 0
 --- !u!1 &587906161133112020
@@ -359,7 +359,7 @@ MonoBehaviour:
   _maxDistanceToTorso: 0.5
   _maxVerticalOffset: 0.3
   _switchCooldown: 0.5
-  _dwellTime: 0.1
+  _dwellTime: 0.2
   _showDebugGizmos: 1
   _logSwitchEvents: 0
 --- !u!1 &2806774674242740200
