@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 2859081972979433518}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.025, y: 0.25, z: 0.96}
+  m_LocalPosition: {x: 0.025000002, y: 0.25, z: 0.612}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8891874296178015797}
+  m_Father: {fileID: 2264286648429348536}
   m_LocalEulerAnglesHint: {x: -90, y: -180, z: 0}
 --- !u!2083052967 &5112796504667954517
 VisualEffect:
@@ -50,7 +50,10 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0
+        m_Name: SpawnRate
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -250,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 4227205759841547429}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00007141113, y: 0.578, z: -0.309}
+  m_LocalPosition: {x: 0, y: 0.578, z: -0.309}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -362,6 +365,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8891874296178015797}
+  - {fileID: 5639230710518260191}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8533995425549172696
@@ -377,7 +381,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 2548713360429479129}
-  _WaterSound: {fileID: 8300000, guid: fd9c2863c636b08438bdaa9f50b2aa16, type: 3}
+  _waterStartSound: {fileID: 0}
+  _waterLoopSound: {fileID: 8300000, guid: fd9c2863c636b08438bdaa9f50b2aa16, type: 3}
+  _waterStopSound: {fileID: 0}
   _shootAction:
     m_UseReference: 0
     m_Action:
@@ -406,9 +412,20 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  _damage: 34
+  _controllerNode: 5
+  _maxDamage: 34
+  _minDamage: 10
+  _maxRange: 6
   _waterVisualEffect: {fileID: 5112796504667954517}
   _barrelLocation: {fileID: 4046112767250464009}
+  _rangeIndicator: {fileID: 0}
+  _splashEffect: {fileID: 0}
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _fireRate: 3
+  _continuousMode: 1
+  _accuracySpread: 0.1
 --- !u!82 &2548713360429479129
 AudioSource:
   m_ObjectHideFlags: 0
@@ -531,7 +548,7 @@ Transform:
   m_GameObject: {fileID: 7551191879815405041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.292, z: 1.754}
+  m_LocalPosition: {x: 0, y: 0.407, z: 1.754}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -565,7 +582,7 @@ Transform:
   m_GameObject: {fileID: 7555125239283541787}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.000005493164, y: -0.0000006866455, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -660,7 +677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8891874296178015797}
   m_Layer: 0
-  m_Name: waterGun
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -679,7 +696,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5639230710518260191}
   - {fileID: 7872568057270857323}
   - {fileID: 7485245966603012952}
   - {fileID: 8768606314107263648}
