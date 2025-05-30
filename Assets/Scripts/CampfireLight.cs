@@ -13,8 +13,8 @@ public class CampfireLight : MonoBehaviour
     [SerializeField] private float intensitySpeed = 3.0f;
 
     [Header("Color Settings")]
-    [SerializeField] private Color baseColor = new Color(1.0f, 0.6f, 0.2f); // Orange flame color
-    [SerializeField] private Color colorVariation = new Color(0.3f, 0.2f, 0.1f);
+    [SerializeField] private Color baseColor = new(1.0f, 0.6f, 0.2f); // Orange flame color
+    [SerializeField] private Color colorVariation = new(0.3f, 0.2f, 0.1f);
     [SerializeField] private float colorSpeed = 2.5f;
 
     [Header("Range Settings")]
