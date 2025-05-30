@@ -804,7 +804,7 @@ MonoBehaviour:
   stoppingDistance: 1.2
   damage: 20
   scoreValue: 100
-  attackRadius: 2
+  attackRadius: 1.5
   attackInterval: 2
   stunDuration: 1
   deathImagePrefab: {fileID: 1931773124535695256, guid: d36bd4259d5f5dc4e8dd014d79dbaa89, type: 3}
