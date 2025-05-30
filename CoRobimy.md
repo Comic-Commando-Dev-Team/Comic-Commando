@@ -1,9 +1,0 @@
--Las (Gęsty)
--Ciemno (ale nie niewidocznie)
--Latarka
--Mroczna muzyka
--Dźwięki lasu
--Dodanie cyrków
--Naprawić Waterguna
--Score Board
--FSM klauny
