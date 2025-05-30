@@ -14694,7 +14694,7 @@ GameObject:
   - component: {fileID: 6221352621549641911}
   - component: {fileID: 4667986088276071057}
   m_Layer: 0
-  m_Name: fx
+  m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24431,7 +24431,7 @@ GameObject:
   - component: {fileID: 3380309138426408447}
   - component: {fileID: 411361983616490581}
   m_Layer: 0
-  m_Name: Bonfire
+  m_Name: Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24481,8 +24481,9 @@ GameObject:
   - component: {fileID: 8615383734833844061}
   - component: {fileID: 7515162640026531079}
   - component: {fileID: 3204343314826913393}
+  - component: {fileID: 9076753451506065048}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24591,6 +24592,38 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &9076753451506065048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780867712288085714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b385135105d84910baf7036f3f6e247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseIntensity: 1.5
+  intensityVariation: 0.8
+  intensitySpeed: 3
+  baseColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+  colorVariation: {r: 0.3, g: 0.2, b: 0.1, a: 1}
+  colorSpeed: 2.5
+  baseRange: 6
+  rangeVariation: 1.5
+  rangeSpeed: 1.8
+  enableRandomFlicker: 1
+  flickerChance: 0.02
+  flickerIntensity: 0.3
+  flickerDuration: 0.1
+  enableWindEffect: 1
+  windStrength: 0.5
+  windSpeed: 1.2
+  updateFrequency: 30
+  enableColorVariation: 1
+  enableRangeVariation: 1
+  useLowQualityNoise: 0
 --- !u!1 &8886471889588683408
 GameObject:
   m_ObjectHideFlags: 0

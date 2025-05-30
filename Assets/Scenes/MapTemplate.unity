@@ -746,9 +746,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
+      propertyPath: m_Range
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7515162640026531079, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8368449082865925186, guid: 47e83a6539fa440f1b2139e198c24437, type: 3}
       propertyPath: m_Name
-      value: Bonfire
+      value: Campfire
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
