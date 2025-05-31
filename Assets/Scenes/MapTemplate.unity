@@ -223,14 +223,6 @@ PrefabInstance:
       propertyPath: 'musicTracks.Array.data[21]'
       value: 
       objectReference: {fileID: 8300000, guid: ccb3fac79b6fd4cda859e6aaeb8dce8a, type: 3}
-    - target: {fileID: 4268304358218355555, guid: b8bcd6b59e87f4e7895061509c7d891b, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: 8b2702bdeab544d8db73213aae5681ae, type: 3}
-    - target: {fileID: 4268304358218355555, guid: b8bcd6b59e87f4e7895061509c7d891b, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8b2702bdeab544d8db73213aae5681ae, type: 3}
     - target: {fileID: 6028435453013441140, guid: b8bcd6b59e87f4e7895061509c7d891b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 48.09172
@@ -706,7 +698,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6286579346489843726, guid: 8992665b1fd314416b1a69bd9cb6a199, type: 3}
+    - {fileID: 3568761791186875527, guid: 8992665b1fd314416b1a69bd9cb6a199, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8992665b1fd314416b1a69bd9cb6a199, type: 3}
