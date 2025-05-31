@@ -31,7 +31,6 @@ public class WalkerClown : MonoBehaviour
     [SerializeField] private float stunDuration = 1.0f;
 
     [Header("References")]
-    [SerializeField] private GameObject deathImagePrefab;
     [SerializeField] private AudioClip attackSound;
     [SerializeField] private AudioClip laughSound;
 
@@ -234,18 +233,14 @@ public class WalkerClown : MonoBehaviour
         ChangeState(ClownState.Idle);
     }
 
-    private void SpawnDeathImage()
+    private void ShowScorePoints()
     {
-        if (deathImagePrefab != null && targetTracker.CurrentTarget != null)
-        {
-            Vector3 spawnPosition = transform.position;
-            spawnPosition.y += 1;
-            GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
-            Destroy(deathImage, 2f);
-            Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            deathImage.transform.rotation = lookRotation;
-        }
+        // Show floating score text at the enemy's position
+        Vector3 scorePosition = transform.position;
+        scorePosition.y += 1.5f; // Slightly above the enemy
+
+        // Use the ScoreTextManager for better performance and visuals
+        ScoreTextManager.Instance.ShowScore(scoreValue, scorePosition);
     }
 
     private void OnDamage()
@@ -264,7 +259,7 @@ public class WalkerClown : MonoBehaviour
             agent.isStopped = true;
             agent.enabled = false;
         }
-        SpawnDeathImage();
+        ShowScorePoints();
         ChangeState(ClownState.Die);
         StartCoroutine(DeathSequence());
     }

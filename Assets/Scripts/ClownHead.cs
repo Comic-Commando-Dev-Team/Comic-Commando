@@ -17,10 +17,7 @@ public class ClownHead : MonoBehaviour
     [SerializeField] private float projectileSpeed = 10f;
 
     [Header("Death")]
-    [SerializeField] private GameObject deathImagePrefab;
     [SerializeField] private int points = 100;
-    [SerializeField] private float deathImageHeight = 1f;
-    [SerializeField] private float deathImageDuration = 2f;
 
     private HealthController healthController;
     private TargetTracker targetTracker;
@@ -135,22 +132,14 @@ public class ClownHead : MonoBehaviour
         return shootPoint != null && projectilePrefab != null;
     }
 
-    private void SpawnDeathImage()
+    private void ShowScorePoints()
     {
-        if (deathImagePrefab == null || targetTracker.CurrentTarget == null) return;
+        // Show floating score text at the enemy's position
+        Vector3 scorePosition = transform.position;
+        scorePosition.y += 1.5f; // Slightly above the enemy
 
-        Vector3 spawnPosition = transform.position + Vector3.up * deathImageHeight;
-        GameObject deathImage = Instantiate(deathImagePrefab, spawnPosition, Quaternion.identity);
-
-        RotateDeathImageTowardsPlayer(deathImage);
-        Destroy(deathImage, deathImageDuration);
-    }
-
-    private void RotateDeathImageTowardsPlayer(GameObject deathImage)
-    {
-        Vector3 direction = (targetTracker.CurrentTarget.transform.position - deathImage.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        deathImage.transform.rotation = lookRotation * Quaternion.Euler(0, 90, 0);
+        // Use the ScoreTextManager for better performance and visuals
+        ScoreTextManager.Instance.ShowScore(points, scorePosition);
     }
 
     private void OnDeath()
@@ -159,7 +148,7 @@ public class ClownHead : MonoBehaviour
         {
             scoreBoard.AddScore(points);
         }
-        SpawnDeathImage();
+        ShowScorePoints();
         Destroy(gameObject);
     }
 

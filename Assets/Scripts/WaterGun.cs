@@ -151,12 +151,14 @@ public class WaterGun : MonoBehaviour
         {
             _isShooting = false;
 
-            // Play stop sound
-            if (_audioSource != null && _waterStopSound != null)
+            if (_audioSource != null)
             {
-                _audioSource.loop = false;
                 _audioSource.Stop();
-                _audioSource.PlayOneShot(_waterStopSound);
+                if (_waterStopSound != null)
+                {
+                    _audioSource.loop = false;
+                    _audioSource.PlayOneShot(_waterStopSound);
+                }
             }
         }
 
