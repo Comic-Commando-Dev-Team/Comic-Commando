@@ -34339,13 +34339,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseIntensity: 1.5
-  intensityVariation: 0.8
+  intensityVariation: 1
   intensitySpeed: 3
   baseColor: {r: 1, g: 0.6, b: 0.2, a: 1}
   colorVariation: {r: 0.3, g: 0.2, b: 0.1, a: 1}
   colorSpeed: 2.5
   baseRange: 6
-  rangeVariation: 1.5
+  rangeVariation: 2
   rangeSpeed: 1.8
   enableRandomFlicker: 1
   flickerChance: 0.02
