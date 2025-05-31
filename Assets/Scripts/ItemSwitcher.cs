@@ -7,6 +7,8 @@ using System.Collections.Generic;
 /// </summary>
 public class ItemSwitcher : MonoBehaviour
 {
+    private const string SELECTED_ITEM_KEY = "ItemSwitcher_SelectedIndex";
+
     [Header("Settings")]
     [SerializeField] private Transform _headTransform;
     [Tooltip("How far behind the player's back the hand needs to be to trigger switching")]
@@ -113,6 +115,19 @@ public class ItemSwitcher : MonoBehaviour
             Debug.Log("ItemSwitcher: Recalibration called (automatic head-based adaptation enabled)");
         }
     }
+
+    /// <summary>
+    /// Clears the saved item selection preference.
+    /// The next time the scene loads, it will default to the first item.
+    /// </summary>
+    public void ClearSavedSelection()
+    {
+        PlayerPrefs.DeleteKey(SELECTED_ITEM_KEY);
+        if (_logSwitchEvents)
+        {
+            Debug.Log("ItemSwitcher: Cleared saved item selection");
+        }
+    }
     #endregion
 
     #region Private Methods
@@ -130,7 +145,18 @@ public class ItemSwitcher : MonoBehaviour
     {
         if (_availableItems.Count > 0)
         {
-            SwitchToItem(0);
+            // Load the previously selected item index, defaulting to 0 if none saved
+            int savedIndex = PlayerPrefs.GetInt(SELECTED_ITEM_KEY, 0);
+            
+            // Ensure the saved index is valid for current item count
+            int targetIndex = Mathf.Clamp(savedIndex, 0, _availableItems.Count - 1);
+            
+            if (_logSwitchEvents)
+            {
+                Debug.Log($"ItemSwitcher: Loading saved item index {savedIndex}, using index {targetIndex}");
+            }
+            
+            SwitchToItem(targetIndex);
         }
     }
 
@@ -236,6 +262,14 @@ public class ItemSwitcher : MonoBehaviour
         if (_currentItemIndex >= 0 && _currentItemIndex < _availableItems.Count)
         {
             _availableItems[_currentItemIndex].SetActive(true);
+            
+            // Save the current selection to persist across scene reloads
+            PlayerPrefs.SetInt(SELECTED_ITEM_KEY, _currentItemIndex);
+            
+            if (_logSwitchEvents)
+            {
+                Debug.Log($"ItemSwitcher: Saved item index {_currentItemIndex} to PlayerPrefs");
+            }
         }
     }
 
