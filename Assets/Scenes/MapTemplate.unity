@@ -325,9 +325,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 2
@@ -403,9 +411,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 1
@@ -620,16 +636,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: spawnInterval
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: spawnIntervalRandomness
@@ -757,9 +781,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 2
@@ -835,9 +867,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 3
@@ -952,16 +992,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 7686609253948970820, guid: 588efdb2f3a6a1341bf69bf6fa04a320, type: 3}
+    - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
+      propertyPath: spawnRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: maxEnemyCount
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: spawnInterval
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7013763750653332599, guid: d80032aaf7e764e9ab4c30740d6ffb6e, type: 3}
       propertyPath: spawnIntervalRandomness
